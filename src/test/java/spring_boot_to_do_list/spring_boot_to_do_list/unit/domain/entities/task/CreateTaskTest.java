@@ -10,7 +10,6 @@ import spring_boot_to_do_list.spring_boot_to_do_list.domain.enums.TaskStatus;
 import spring_boot_to_do_list.spring_boot_to_do_list.application.exceptions.BusinessException;
 
 public class CreateTaskTest {
-
     private final String defaultTitle = "test title";
     private final String defaultDescription = "test description";
     private final LocalDateTime defaultCreationDate = LocalDateTime.now();
@@ -19,16 +18,16 @@ public class CreateTaskTest {
     @Test
     public void testCreateTask() {
         assertDoesNotThrow(() -> {
-            Task task = new Task(defaultTitle, defaultDescription, defaultCreationDate, defaultStatus);
-            task.create();
+            Task entity = new Task(defaultTitle, defaultDescription, defaultCreationDate, defaultStatus);
+            entity.create();
         });
     }
 
     @Test
     public void testNotCreateTaskIfTitleIsEmpty() {
         BusinessException exception = assertThrows(BusinessException.class, () -> {
-            Task task = new Task("", defaultDescription, defaultCreationDate, defaultStatus);
-            task.create();
+            Task entity = new Task("", defaultDescription, defaultCreationDate, defaultStatus);
+            entity.create();
         });
         assertEquals("Invalid title", exception.getMessage());
     }
@@ -36,8 +35,8 @@ public class CreateTaskTest {
     @Test
     public void testNotCreateTaskIfTitleIsNull() {
         BusinessException exception = assertThrows(BusinessException.class, () -> {
-            Task task = new Task(null, defaultDescription, defaultCreationDate, defaultStatus);
-            task.create();
+            Task entity = new Task(null, defaultDescription, defaultCreationDate, defaultStatus);
+            entity.create();
         });
         assertEquals("Invalid title", exception.getMessage());
     }
@@ -45,8 +44,8 @@ public class CreateTaskTest {
     @Test
     public void testNotCreateTaskIfDescriptionIsEmpty() {
         BusinessException exception = assertThrows(BusinessException.class, () -> {
-            Task task = new Task(defaultTitle, "", defaultCreationDate, defaultStatus);
-            task.create();
+            Task entity = new Task(defaultTitle, "", defaultCreationDate, defaultStatus);
+            entity.create();
         });
         assertEquals("Invalid description", exception.getMessage());
     }
@@ -54,8 +53,8 @@ public class CreateTaskTest {
     @Test
     public void testNotCreateTaskIfDescriptionIsNull() {
         BusinessException exception = assertThrows(BusinessException.class, () -> {
-            Task task = new Task(defaultTitle, null, defaultCreationDate, defaultStatus);
-            task.create();
+            Task entity = new Task(defaultTitle, null, defaultCreationDate, defaultStatus);
+            entity.create();
         });
         assertEquals("Invalid description", exception.getMessage());
     }
@@ -63,8 +62,8 @@ public class CreateTaskTest {
     @Test
     public void testNotCreateTaskIfCreationDateIsAfterNow() {
         BusinessException exception = assertThrows(BusinessException.class, () -> {
-            Task task = new Task(defaultTitle, defaultDescription, LocalDateTime.now().plusDays(1), defaultStatus);
-            task.create();
+            Task entity = new Task(defaultTitle, defaultDescription, LocalDateTime.now().plusDays(1), defaultStatus);
+            entity.create();
         });
         assertEquals("Invalid creation date", exception.getMessage());
     }
@@ -72,8 +71,8 @@ public class CreateTaskTest {
     @Test
     public void testNotCreateTaskIfStatusIsNotPending() {
         BusinessException exception = assertThrows(BusinessException.class, () -> {
-            Task task = new Task(defaultTitle, defaultDescription, defaultCreationDate, TaskStatus.COMPLETED);
-            task.create();
+            Task entity = new Task(defaultTitle, defaultDescription, defaultCreationDate, TaskStatus.COMPLETED);
+            entity.create();
         });
         assertEquals("Invalid status", exception.getMessage());
     }
