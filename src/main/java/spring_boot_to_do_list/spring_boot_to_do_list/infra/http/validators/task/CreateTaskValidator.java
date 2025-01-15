@@ -9,6 +9,6 @@ public class CreateTaskValidator {
     public String title;
 
     @NotEmpty(message = "Description is required")
-    @Size(max = 255)
+    @Size(max = 255, message = "Description must be less than 255 characters")
     public String description;
 }
