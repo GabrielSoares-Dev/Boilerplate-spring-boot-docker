@@ -1,0 +1,29 @@
+version: '3.5'
+services:
+  spring-boot-to-do-list:
+    container_name: spring-boot-to-do-list
+    build:
+      context: .
+      dockerfile: Dockerfile.dev 
+    networks:
+      - spring-boot-to-do-list-network
+    ports:
+      - 8080:8080
+    volumes:
+      - .:/app/spring-boot-to-do-list
+    stdin_open: true
+    tty: true
+  # sql-server:
+  #   container_name: sql-server
+  #   image: "mcr.microsoft.com/mssql/server:2019-latest"
+  #   networks:
+  #     - spring-boot-to-do-list-network
+  #   environment:
+  #     SA_PASSWORD: "Password123"
+  #     ACCEPT_EULA: "Y"
+  #   ports:
+  #     - "1433:1433"
+networks:
+   spring-boot-to-do-list-network:
+    name: spring-boot-to-do-list-network
+    driver: bridge
