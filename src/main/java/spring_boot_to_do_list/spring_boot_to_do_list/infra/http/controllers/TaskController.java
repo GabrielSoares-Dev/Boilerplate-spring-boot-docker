@@ -1,28 +1,31 @@
 package spring_boot_to_do_list.spring_boot_to_do_list.infra.http.controllers;
 
 import java.util.Map;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
-
 import jakarta.validation.Valid;
 import spring_boot_to_do_list.spring_boot_to_do_list.application.dtos.useCases.task.create.CreateTaskUseCaseInputDto;
 import spring_boot_to_do_list.spring_boot_to_do_list.application.exceptions.BusinessException;
 import spring_boot_to_do_list.spring_boot_to_do_list.application.useCases.task.CreateTaskUseCase;
+import spring_boot_to_do_list.spring_boot_to_do_list.application.useCases.task.DeleteTaskUseCase;
 import spring_boot_to_do_list.spring_boot_to_do_list.infra.helpers.BaseResponse;
 import spring_boot_to_do_list.spring_boot_to_do_list.infra.http.validators.task.CreateTaskValidator;
 
 @RestController
-@RequestMapping("/tasks")
+@RequestMapping("/v1/tasks")
 public class TaskController {
-
     @Autowired
     private CreateTaskUseCase createTaskUseCase;
+
+    @Autowired
+    private DeleteTaskUseCase deleteTaskUseCase;
 
     @PostMapping
     public ResponseEntity<Map<String, Object>> create(@Valid @RequestBody CreateTaskValidator input) {
@@ -33,6 +36,25 @@ public class TaskController {
             String errorMessage = exception.getMessage();
             return BaseResponse.error(errorMessage, HttpStatus.INTERNAL_SERVER_ERROR);
         }
-
     }
+
+    @DeleteMapping("/{id}")
+    public ResponseEntity<Map<String, Object>> delete(@PathVariable Integer id) {
+        try {
+            this.deleteTaskUseCase.run(id);
+            return BaseResponse.success("Task deleted successfully", HttpStatus.OK);
+        } catch (BusinessException exception) {
+            String errorMessage = exception.getMessage();
+            HttpStatus httpStatus = HttpStatus.INTERNAL_SERVER_ERROR;
+
+            boolean isNotFoundError = errorMessage == "Task not found";
+
+            if (isNotFoundError) {
+                httpStatus = HttpStatus.BAD_REQUEST;
+            }
+
+            return BaseResponse.error(errorMessage, httpStatus);
+        }
+    }
+
 }
