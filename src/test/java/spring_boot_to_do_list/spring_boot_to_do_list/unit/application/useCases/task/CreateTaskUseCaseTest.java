@@ -6,11 +6,12 @@ import spring_boot_to_do_list.spring_boot_to_do_list.application.dtos.repositori
 import spring_boot_to_do_list.spring_boot_to_do_list.application.dtos.useCases.task.create.CreateTaskUseCaseInputDto;
 import spring_boot_to_do_list.spring_boot_to_do_list.application.exceptions.BusinessException;
 import spring_boot_to_do_list.spring_boot_to_do_list.application.repositories.TaskRepositoryInterface;
+import spring_boot_to_do_list.spring_boot_to_do_list.application.services.LoggerServiceInterface;
+
 import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
-
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.ArgumentCaptor;
@@ -19,6 +20,9 @@ import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 
 public class CreateTaskUseCaseTest {
+    @Mock
+    private LoggerServiceInterface loggerServiceInterface;
+
     @Mock
     private TaskRepositoryInterface taskRepository;
 

@@ -7,16 +7,23 @@ import org.springframework.stereotype.Service;
 import spring_boot_to_do_list.spring_boot_to_do_list.application.dtos.repositories.task.FindAllTasksRepositoryOutputDto;
 import spring_boot_to_do_list.spring_boot_to_do_list.application.dtos.useCases.task.list.ListTasksUseCaseOutputDto;
 import spring_boot_to_do_list.spring_boot_to_do_list.application.repositories.TaskRepositoryInterface;
+import spring_boot_to_do_list.spring_boot_to_do_list.application.services.LoggerServiceInterface;
 
 @Service
 public class ListTasksUseCase {
     @Autowired
+    private LoggerServiceInterface loggerService;
+
+    @Autowired
     private TaskRepositoryInterface taskRepository;
 
+    private String logContext = "ListTasksUseCase";
+
     public List<ListTasksUseCaseOutputDto> run() {
+        this.loggerService.debug(String.format("Start %s ", this.logContext));
         List<FindAllTasksRepositoryOutputDto> tasks = this.taskRepository.findAll();
 
-        return tasks.stream()
+        List<ListTasksUseCaseOutputDto> output = tasks.stream()
                 .map(task -> new ListTasksUseCaseOutputDto(
                         task.id,
                         task.title,
@@ -24,5 +31,9 @@ public class ListTasksUseCase {
                         task.status,
                         task.createdAt))
                 .collect(Collectors.toList());
+        this.loggerService.debug("output: ", output);
+
+        this.loggerService.debug(String.format("Finish %s ", this.logContext));
+        return output;
     }
 }

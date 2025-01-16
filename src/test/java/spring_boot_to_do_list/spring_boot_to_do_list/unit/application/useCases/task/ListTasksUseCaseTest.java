@@ -13,10 +13,14 @@ import org.mockito.MockitoAnnotations;
 import spring_boot_to_do_list.spring_boot_to_do_list.application.dtos.repositories.task.FindAllTasksRepositoryOutputDto;
 import spring_boot_to_do_list.spring_boot_to_do_list.application.dtos.useCases.task.list.ListTasksUseCaseOutputDto;
 import spring_boot_to_do_list.spring_boot_to_do_list.application.repositories.TaskRepositoryInterface;
+import spring_boot_to_do_list.spring_boot_to_do_list.application.services.LoggerServiceInterface;
 import spring_boot_to_do_list.spring_boot_to_do_list.application.useCases.task.ListTasksUseCase;
 import spring_boot_to_do_list.spring_boot_to_do_list.domain.enums.TaskStatus;
 
 public class ListTasksUseCaseTest {
+    @Mock
+    private LoggerServiceInterface loggerServiceInterface;
+    
     @Mock
     private TaskRepositoryInterface taskRepository;
 

@@ -19,6 +19,7 @@ import spring_boot_to_do_list.spring_boot_to_do_list.application.dtos.useCases.t
 import spring_boot_to_do_list.spring_boot_to_do_list.application.dtos.useCases.task.list.ListTasksUseCaseOutputDto;
 import spring_boot_to_do_list.spring_boot_to_do_list.application.dtos.useCases.task.update.UpdateTaskUseCaseInputDto;
 import spring_boot_to_do_list.spring_boot_to_do_list.application.exceptions.BusinessException;
+import spring_boot_to_do_list.spring_boot_to_do_list.application.services.LoggerServiceInterface;
 import spring_boot_to_do_list.spring_boot_to_do_list.application.useCases.task.CreateTaskUseCase;
 import spring_boot_to_do_list.spring_boot_to_do_list.application.useCases.task.DeleteTaskUseCase;
 import spring_boot_to_do_list.spring_boot_to_do_list.application.useCases.task.FindTaskByIdUseCase;
@@ -31,6 +32,9 @@ import spring_boot_to_do_list.spring_boot_to_do_list.infra.http.validators.task.
 @RestController
 @RequestMapping("/v1/tasks")
 public class TaskController {
+    @Autowired
+    private LoggerServiceInterface loggerService;
+
     @Autowired
     private CreateTaskUseCase createTaskUseCase;
 
@@ -46,27 +50,38 @@ public class TaskController {
     @Autowired
     private DeleteTaskUseCase deleteTaskUseCase;
 
+    private String logContext = "TaskController";
+
     @PostMapping
     public ResponseEntity<Map<String, Object>> create(@Valid @RequestBody CreateTaskValidator input) {
+        this.loggerService.debug(String.format("Start %s create with input: ", this.logContext), input);
         try {
             this.createTaskUseCase.run(new CreateTaskUseCaseInputDto(input.title, input.description));
             return BaseResponse.success("Task created successfully", HttpStatus.CREATED);
         } catch (BusinessException exception) {
             String errorMessage = exception.getMessage();
+            this.loggerService.error("Error:", errorMessage);
             return BaseResponse.error(errorMessage, HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
 
     @GetMapping
     public ResponseEntity<Map<String, Object>> list() {
+        this.loggerService.debug(String.format("Start %s list", this.logContext));
+
         List<ListTasksUseCaseOutputDto> output = this.listTasksUseCase.run();
+        this.loggerService.debug("output: ", output);
+
         return BaseResponse.successWithContent("Tasks retrieved successfully", HttpStatus.OK, output);
     }
 
     @GetMapping("/{id}")
     public ResponseEntity<Map<String, Object>> findById(@PathVariable Integer id) {
+        this.loggerService.debug(String.format("Start %s findById with input: ", this.logContext), id);
         try {
             FindTaskByIdUseCaseOutputDto output = this.findTaskByIdUseCase.run(id);
+            this.loggerService.debug("output: ", output);
+
             return BaseResponse.successWithContent("Task found successfully", HttpStatus.OK, output);
         } catch (BusinessException exception) {
             String errorMessage = exception.getMessage();
@@ -77,14 +92,16 @@ public class TaskController {
             if (isNotFoundError) {
                 httpStatus = HttpStatus.BAD_REQUEST;
             }
-
+            this.loggerService.error("Error:", errorMessage);
             return BaseResponse.error(errorMessage, httpStatus);
         }
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<Map<String, Object>> update(@PathVariable Integer id,
+    public ResponseEntity<Map<String, Object>> update(
+            @PathVariable Integer id,
             @Valid @RequestBody UpdateTaskValidator input) {
+        this.loggerService.debug(String.format("Start %s update with input: ", this.logContext), input);
         try {
             this.updateTaskUseCase.run(new UpdateTaskUseCaseInputDto(id, input.title, input.description, input.status));
             return BaseResponse.success("Task updated successfully", HttpStatus.OK);
@@ -97,13 +114,14 @@ public class TaskController {
             if (isNotFoundError) {
                 httpStatus = HttpStatus.BAD_REQUEST;
             }
-
+            this.loggerService.error("Error:", errorMessage);
             return BaseResponse.error(errorMessage, httpStatus);
         }
     }
 
     @DeleteMapping("/{id}")
     public ResponseEntity<Map<String, Object>> delete(@PathVariable Integer id) {
+        this.loggerService.debug(String.format("Start %s update with input: ", this.logContext), id);
         try {
             this.deleteTaskUseCase.run(id);
             return BaseResponse.success("Task deleted successfully", HttpStatus.OK);
@@ -116,7 +134,7 @@ public class TaskController {
             if (isNotFoundError) {
                 httpStatus = HttpStatus.BAD_REQUEST;
             }
-
+            this.loggerService.error("Error:", errorMessage);
             return BaseResponse.error(errorMessage, httpStatus);
         }
     }

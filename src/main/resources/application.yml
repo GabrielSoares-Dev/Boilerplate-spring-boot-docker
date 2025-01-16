@@ -1,11 +1,6 @@
 spring:
   application:
     name: spring_boot_to_do-list
-  logging:
-    level:
-      root: DEBUG
-      org:
-       springframework: DEBUG
   datasource:
     url: jdbc:sqlserver://sql-server;databaseName=spring-boot-to-do-list;encrypt=false
     username: sa

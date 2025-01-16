@@ -14,12 +14,15 @@ import org.mockito.MockitoAnnotations;
 import spring_boot_to_do_list.spring_boot_to_do_list.application.dtos.repositories.task.FindTaskByIdRepositoryOutputDto;
 import spring_boot_to_do_list.spring_boot_to_do_list.application.exceptions.BusinessException;
 import spring_boot_to_do_list.spring_boot_to_do_list.application.repositories.TaskRepositoryInterface;
+import spring_boot_to_do_list.spring_boot_to_do_list.application.services.LoggerServiceInterface;
 import spring_boot_to_do_list.spring_boot_to_do_list.application.useCases.task.DeleteTaskUseCase;
 import spring_boot_to_do_list.spring_boot_to_do_list.domain.enums.TaskStatus;
 import java.time.LocalDateTime;
 import java.util.Optional;
 
 public class DeleteTaskUseCaseTest {
+    @Mock
+    private LoggerServiceInterface loggerServiceInterface;
 
     @Mock
     private TaskRepositoryInterface taskRepository;
@@ -37,12 +40,11 @@ public class DeleteTaskUseCaseTest {
     @Test
     public void testDeleted() {
         FindTaskByIdRepositoryOutputDto mockFindByIdOutput = new FindTaskByIdRepositoryOutputDto(
-            defaultId,
-            "Task 1",
-            "Description 1",
-            TaskStatus.IN_PROGRESS,
-            LocalDateTime.now()
-        );
+                defaultId,
+                "Task 1",
+                "Description 1",
+                TaskStatus.IN_PROGRESS,
+                LocalDateTime.now());
         when(taskRepository.findById(defaultId)).thenReturn(Optional.of(mockFindByIdOutput));
 
         assertDoesNotThrow(() -> {
