@@ -2,6 +2,7 @@ package spring_boot_to_do_list.spring_boot_to_do_list.unit.application.useCases.
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.Mockito.when;
+
 import java.time.LocalDateTime;
 import java.util.Arrays;
 import java.util.List;
@@ -18,52 +19,43 @@ import spring_boot_to_do_list.spring_boot_to_do_list.application.useCases.task.L
 import spring_boot_to_do_list.spring_boot_to_do_list.domain.enums.TaskStatus;
 
 public class ListTasksUseCaseTest {
-    @Mock
-    private LoggerServiceInterface loggerServiceInterface;
-    
-    @Mock
-    private TaskRepositoryInterface taskRepository;
+  @Mock private LoggerServiceInterface loggerServiceInterface;
 
-    @InjectMocks
-    private ListTasksUseCase useCase;
+  @Mock private TaskRepositoryInterface taskRepository;
 
-    @BeforeEach
-    public void setUp() {
-        MockitoAnnotations.openMocks(this);
-    }
+  @InjectMocks private ListTasksUseCase useCase;
 
-    @Test
-    public void testListTasks() {
-        LocalDateTime currentDate = LocalDateTime.now();
-        FindAllTasksRepositoryOutputDto task1 = new FindAllTasksRepositoryOutputDto(
-                1,
-                "Task 1",
-                "Description 1",
-                TaskStatus.PENDING,
-                currentDate);
-        FindAllTasksRepositoryOutputDto task2 = new FindAllTasksRepositoryOutputDto(
-                2,
-                "Task 2",
-                "Description 2",
-                TaskStatus.COMPLETED,
-                currentDate);
+  @BeforeEach
+  public void setUp() {
+    MockitoAnnotations.openMocks(this);
+  }
 
-        when(taskRepository.findAll()).thenReturn(Arrays.asList(task1, task2));
+  @Test
+  public void testListTasks() {
+    LocalDateTime currentDate = LocalDateTime.now();
+    FindAllTasksRepositoryOutputDto task1 =
+        new FindAllTasksRepositoryOutputDto(
+            1, "Task 1", "Description 1", TaskStatus.PENDING, currentDate);
+    FindAllTasksRepositoryOutputDto task2 =
+        new FindAllTasksRepositoryOutputDto(
+            2, "Task 2", "Description 2", TaskStatus.COMPLETED, currentDate);
 
-        List<ListTasksUseCaseOutputDto> output = useCase.run();
+    when(taskRepository.findAll()).thenReturn(Arrays.asList(task1, task2));
 
-        ListTasksUseCaseOutputDto outputTask1 = output.get(0);
-        assertEquals(1, outputTask1.id);
-        assertEquals("Task 1", outputTask1.title);
-        assertEquals("Description 1", outputTask1.description);
-        assertEquals(currentDate, outputTask1.createdAt);
-        assertEquals(TaskStatus.PENDING, outputTask1.status);
+    List<ListTasksUseCaseOutputDto> output = useCase.run();
 
-        ListTasksUseCaseOutputDto outputTask2 = output.get(1);
-        assertEquals(2, outputTask2.id);
-        assertEquals("Task 2", outputTask2.title);
-        assertEquals("Description 2", outputTask2.description);
-        assertEquals(currentDate, outputTask2.createdAt);
-        assertEquals(TaskStatus.COMPLETED, outputTask2.status);
-    }
+    ListTasksUseCaseOutputDto outputTask1 = output.get(0);
+    assertEquals(1, outputTask1.id);
+    assertEquals("Task 1", outputTask1.title);
+    assertEquals("Description 1", outputTask1.description);
+    assertEquals(currentDate, outputTask1.createdAt);
+    assertEquals(TaskStatus.PENDING, outputTask1.status);
+
+    ListTasksUseCaseOutputDto outputTask2 = output.get(1);
+    assertEquals(2, outputTask2.id);
+    assertEquals("Task 2", outputTask2.title);
+    assertEquals("Description 2", outputTask2.description);
+    assertEquals(currentDate, outputTask2.createdAt);
+    assertEquals(TaskStatus.COMPLETED, outputTask2.status);
+  }
 }

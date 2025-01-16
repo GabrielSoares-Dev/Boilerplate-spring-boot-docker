@@ -5,6 +5,7 @@ import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
+
 import java.time.LocalDateTime;
 import java.util.Optional;
 import org.junit.jupiter.api.BeforeEach;
@@ -21,60 +22,54 @@ import spring_boot_to_do_list.spring_boot_to_do_list.application.useCases.task.F
 import spring_boot_to_do_list.spring_boot_to_do_list.domain.enums.TaskStatus;
 
 public class FindTaskByIdUseCaseTest {
-    @Mock
-    private LoggerServiceInterface loggerServiceInterface;
-    
-    @Mock
-    private TaskRepositoryInterface taskRepository;
+  @Mock private LoggerServiceInterface loggerServiceInterface;
 
-    @InjectMocks
-    private FindTaskByIdUseCase useCase;
+  @Mock private TaskRepositoryInterface taskRepository;
 
-    private Integer defaultId = 1;
+  @InjectMocks private FindTaskByIdUseCase useCase;
 
-    @BeforeEach
-    public void setUp() {
-        MockitoAnnotations.openMocks(this);
-    }
+  private Integer defaultId = 1;
 
-    @Test
-    public void testFound() throws BusinessException {
-        LocalDateTime currentDate = LocalDateTime.now();
+  @BeforeEach
+  public void setUp() {
+    MockitoAnnotations.openMocks(this);
+  }
 
-        FindTaskByIdRepositoryOutputDto mockFindByIdOutput = new FindTaskByIdRepositoryOutputDto(
-                defaultId,
-                "Task 1",
-                "Description 1",
-                TaskStatus.IN_PROGRESS,
-                currentDate);
-        when(taskRepository.findById(defaultId)).thenReturn(Optional.of(mockFindByIdOutput));
+  @Test
+  public void testFound() throws BusinessException {
+    LocalDateTime currentDate = LocalDateTime.now();
 
-        FindTaskByIdUseCaseOutputDto output = useCase.run(this.defaultId);
-        FindTaskByIdUseCaseOutputDto expectedOutput = new FindTaskByIdUseCaseOutputDto(
-                defaultId,
-                "Task 1",
-                "Description 1",
-                TaskStatus.IN_PROGRESS,
-                currentDate);
+    FindTaskByIdRepositoryOutputDto mockFindByIdOutput =
+        new FindTaskByIdRepositoryOutputDto(
+            defaultId, "Task 1", "Description 1", TaskStatus.IN_PROGRESS, currentDate);
+    when(taskRepository.findById(defaultId)).thenReturn(Optional.of(mockFindByIdOutput));
 
-        assertEquals(expectedOutput.id, output.id);
-        assertEquals(expectedOutput.title, output.title);
-        assertEquals(expectedOutput.description, output.description);
-        assertEquals(expectedOutput.createdAt, output.createdAt);
-        assertEquals(expectedOutput.status, output.status);
+    FindTaskByIdUseCaseOutputDto output = useCase.run(this.defaultId);
+    FindTaskByIdUseCaseOutputDto expectedOutput =
+        new FindTaskByIdUseCaseOutputDto(
+            defaultId, "Task 1", "Description 1", TaskStatus.IN_PROGRESS, currentDate);
 
-        verify(taskRepository, times(1)).findById(defaultId);
-    }
+    assertEquals(expectedOutput.id, output.id);
+    assertEquals(expectedOutput.title, output.title);
+    assertEquals(expectedOutput.description, output.description);
+    assertEquals(expectedOutput.createdAt, output.createdAt);
+    assertEquals(expectedOutput.status, output.status);
 
-    @Test
-    public void testTaskNotFound() throws BusinessException {
-        when(taskRepository.findById(defaultId)).thenReturn(Optional.empty());
-        BusinessException exception = assertThrows(BusinessException.class, () -> {
-            useCase.run(this.defaultId);
-        });
+    verify(taskRepository, times(1)).findById(defaultId);
+  }
 
-        assertEquals("Task not found", exception.getMessage());
+  @Test
+  public void testTaskNotFound() throws BusinessException {
+    when(taskRepository.findById(defaultId)).thenReturn(Optional.empty());
+    BusinessException exception =
+        assertThrows(
+            BusinessException.class,
+            () -> {
+              useCase.run(this.defaultId);
+            });
 
-        verify(taskRepository, times(1)).findById(defaultId);
-    }
+    assertEquals("Task not found", exception.getMessage());
+
+    verify(taskRepository, times(1)).findById(defaultId);
+  }
 }

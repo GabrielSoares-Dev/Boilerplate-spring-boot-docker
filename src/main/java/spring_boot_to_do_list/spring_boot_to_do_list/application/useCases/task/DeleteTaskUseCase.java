@@ -8,27 +8,25 @@ import spring_boot_to_do_list.spring_boot_to_do_list.application.services.Logger
 
 @Service
 public class DeleteTaskUseCase {
-    @Autowired
-    private LoggerServiceInterface loggerService;
+  @Autowired private LoggerServiceInterface loggerService;
 
-    @Autowired
-    private TaskRepositoryInterface taskRepository;
+  @Autowired private TaskRepositoryInterface taskRepository;
 
-    private String logContext = "DeleteTaskUseCase";
+  private String logContext = "DeleteTaskUseCase";
 
-    public void run(Integer id) throws BusinessException {
-        this.loggerService.debug(String.format("Start %s with input: ", this.logContext), id);
+  public void run(Integer id) throws BusinessException {
+    this.loggerService.debug(String.format("Start %s with input: ", this.logContext), id);
 
-        boolean notFound = !this.taskRepository.findById(id).isPresent();
-        this.loggerService.debug(String.format("not found task: %b ", notFound));
+    boolean notFound = !this.taskRepository.findById(id).isPresent();
+    this.loggerService.debug(String.format("not found task: %b ", notFound));
 
-        if (notFound) {
-            throw new BusinessException("Task not found");
-        }
-
-        this.taskRepository.delete(id);
-        this.loggerService.debug("Task deleted");
-
-        this.loggerService.debug(String.format("Finish %s ", this.logContext));
+    if (notFound) {
+      throw new BusinessException("Task not found");
     }
+
+    this.taskRepository.delete(id);
+    this.loggerService.debug("Task deleted");
+
+    this.loggerService.debug(String.format("Finish %s ", this.logContext));
+  }
 }

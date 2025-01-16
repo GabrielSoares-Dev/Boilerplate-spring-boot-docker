@@ -11,29 +11,26 @@ import spring_boot_to_do_list.spring_boot_to_do_list.application.services.Logger
 
 @Service
 public class ListTasksUseCase {
-    @Autowired
-    private LoggerServiceInterface loggerService;
+  @Autowired private LoggerServiceInterface loggerService;
 
-    @Autowired
-    private TaskRepositoryInterface taskRepository;
+  @Autowired private TaskRepositoryInterface taskRepository;
 
-    private String logContext = "ListTasksUseCase";
+  private String logContext = "ListTasksUseCase";
 
-    public List<ListTasksUseCaseOutputDto> run() {
-        this.loggerService.debug(String.format("Start %s ", this.logContext));
-        List<FindAllTasksRepositoryOutputDto> tasks = this.taskRepository.findAll();
+  public List<ListTasksUseCaseOutputDto> run() {
+    this.loggerService.debug(String.format("Start %s ", this.logContext));
+    List<FindAllTasksRepositoryOutputDto> tasks = this.taskRepository.findAll();
 
-        List<ListTasksUseCaseOutputDto> output = tasks.stream()
-                .map(task -> new ListTasksUseCaseOutputDto(
-                        task.id,
-                        task.title,
-                        task.description,
-                        task.status,
-                        task.createdAt))
-                .collect(Collectors.toList());
-        this.loggerService.debug("output: ", output);
+    List<ListTasksUseCaseOutputDto> output =
+        tasks.stream()
+            .map(
+                task ->
+                    new ListTasksUseCaseOutputDto(
+                        task.id, task.title, task.description, task.status, task.createdAt))
+            .collect(Collectors.toList());
+    this.loggerService.debug("output: ", output);
 
-        this.loggerService.debug(String.format("Finish %s ", this.logContext));
-        return output;
-    }
+    this.loggerService.debug(String.format("Finish %s ", this.logContext));
+    return output;
+  }
 }

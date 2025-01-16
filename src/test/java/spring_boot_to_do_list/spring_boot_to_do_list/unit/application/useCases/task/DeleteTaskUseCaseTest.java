@@ -6,6 +6,9 @@ import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
+
+import java.time.LocalDateTime;
+import java.util.Optional;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
@@ -17,54 +20,50 @@ import spring_boot_to_do_list.spring_boot_to_do_list.application.repositories.Ta
 import spring_boot_to_do_list.spring_boot_to_do_list.application.services.LoggerServiceInterface;
 import spring_boot_to_do_list.spring_boot_to_do_list.application.useCases.task.DeleteTaskUseCase;
 import spring_boot_to_do_list.spring_boot_to_do_list.domain.enums.TaskStatus;
-import java.time.LocalDateTime;
-import java.util.Optional;
 
 public class DeleteTaskUseCaseTest {
-    @Mock
-    private LoggerServiceInterface loggerServiceInterface;
+  @Mock private LoggerServiceInterface loggerServiceInterface;
 
-    @Mock
-    private TaskRepositoryInterface taskRepository;
+  @Mock private TaskRepositoryInterface taskRepository;
 
-    @InjectMocks
-    private DeleteTaskUseCase useCase;
+  @InjectMocks private DeleteTaskUseCase useCase;
 
-    private Integer defaultId = 1;
+  private Integer defaultId = 1;
 
-    @BeforeEach
-    public void setUp() {
-        MockitoAnnotations.openMocks(this);
-    }
+  @BeforeEach
+  public void setUp() {
+    MockitoAnnotations.openMocks(this);
+  }
 
-    @Test
-    public void testDeleted() {
-        FindTaskByIdRepositoryOutputDto mockFindByIdOutput = new FindTaskByIdRepositoryOutputDto(
-                defaultId,
-                "Task 1",
-                "Description 1",
-                TaskStatus.IN_PROGRESS,
-                LocalDateTime.now());
-        when(taskRepository.findById(defaultId)).thenReturn(Optional.of(mockFindByIdOutput));
+  @Test
+  public void testDeleted() {
+    FindTaskByIdRepositoryOutputDto mockFindByIdOutput =
+        new FindTaskByIdRepositoryOutputDto(
+            defaultId, "Task 1", "Description 1", TaskStatus.IN_PROGRESS, LocalDateTime.now());
+    when(taskRepository.findById(defaultId)).thenReturn(Optional.of(mockFindByIdOutput));
 
-        assertDoesNotThrow(() -> {
-            useCase.run(this.defaultId);
+    assertDoesNotThrow(
+        () -> {
+          useCase.run(this.defaultId);
         });
 
-        verify(taskRepository, times(1)).findById(defaultId);
-        verify(taskRepository, times(1)).delete(defaultId);
-    }
+    verify(taskRepository, times(1)).findById(defaultId);
+    verify(taskRepository, times(1)).delete(defaultId);
+  }
 
-    @Test
-    public void testNotDeletedIfTaskNotFound() throws BusinessException {
-        when(taskRepository.findById(defaultId)).thenReturn(Optional.empty());
-        BusinessException exception = assertThrows(BusinessException.class, () -> {
-            useCase.run(this.defaultId);
-        });
+  @Test
+  public void testNotDeletedIfTaskNotFound() throws BusinessException {
+    when(taskRepository.findById(defaultId)).thenReturn(Optional.empty());
+    BusinessException exception =
+        assertThrows(
+            BusinessException.class,
+            () -> {
+              useCase.run(this.defaultId);
+            });
 
-        assertEquals("Task not found", exception.getMessage());
+    assertEquals("Task not found", exception.getMessage());
 
-        verify(taskRepository, times(1)).findById(defaultId);
-        verify(taskRepository, times(0)).delete(defaultId);
-    }
+    verify(taskRepository, times(1)).findById(defaultId);
+    verify(taskRepository, times(0)).delete(defaultId);
+  }
 }
