@@ -41,8 +41,8 @@ public class FindTaskByIdUseCaseTest {
                 defaultId,
                 "Task 1",
                 "Description 1",
-                currentDate,
-                TaskStatus.IN_PROGRESS);
+                TaskStatus.IN_PROGRESS,
+                currentDate);
         when(taskRepository.findById(defaultId)).thenReturn(Optional.of(mockFindByIdOutput));
 
         FindTaskByIdUseCaseOutputDto output = useCase.run(this.defaultId);
@@ -50,13 +50,13 @@ public class FindTaskByIdUseCaseTest {
                 defaultId,
                 "Task 1",
                 "Description 1",
-                currentDate,
-                TaskStatus.IN_PROGRESS);
+                TaskStatus.IN_PROGRESS,
+                currentDate);
 
         assertEquals(expectedOutput.id, output.id);
         assertEquals(expectedOutput.title, output.title);
         assertEquals(expectedOutput.description, output.description);
-        assertEquals(expectedOutput.creationDate, output.creationDate);
+        assertEquals(expectedOutput.createdAt, output.createdAt);
         assertEquals(expectedOutput.status, output.status);
 
         verify(taskRepository, times(1)).findById(defaultId);

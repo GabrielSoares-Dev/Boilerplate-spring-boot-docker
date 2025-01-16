@@ -51,8 +51,8 @@ public class UpdateTaskUseCaseTest {
                 1,
                 "test-title",
                 "test-description",
-                LocalDateTime.now(),
-                TaskStatus.COMPLETED);
+                TaskStatus.COMPLETED,
+                LocalDateTime.now());
         when(taskRepository.findById(1)).thenReturn(Optional.of(mockFindByIdOutput));
 
         useCase.run(this.defaultInput);
@@ -81,6 +81,5 @@ public class UpdateTaskUseCaseTest {
 
         verify(taskRepository, times(1)).findById(1);
         verify(taskRepository, times(0)).update(this.expectedUpdateRepositoryInput);
-        ;
     }
 }

@@ -6,7 +6,6 @@ import spring_boot_to_do_list.spring_boot_to_do_list.application.dtos.repositori
 import spring_boot_to_do_list.spring_boot_to_do_list.application.exceptions.BusinessException;
 import spring_boot_to_do_list.spring_boot_to_do_list.application.repositories.TaskRepositoryInterface;
 import spring_boot_to_do_list.spring_boot_to_do_list.domain.enums.TaskStatus;
-import java.time.LocalDateTime;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -16,7 +15,7 @@ public class CreateTaskUseCase {
     private TaskRepositoryInterface taskRepository;
 
     private void validateTask(CreateTaskUseCaseInputDto input) throws BusinessException {
-        Task entity = new Task(input.title, input.description, LocalDateTime.now(), TaskStatus.PENDING);
+        Task entity = new Task(input.title, input.description, TaskStatus.PENDING);
 
         entity.create();
     }
@@ -26,7 +25,6 @@ public class CreateTaskUseCase {
                 new CreateTaskRepositoryInputDto(
                         input.title,
                         input.description,
-                        LocalDateTime.now(),
                         TaskStatus.PENDING));
     }
 

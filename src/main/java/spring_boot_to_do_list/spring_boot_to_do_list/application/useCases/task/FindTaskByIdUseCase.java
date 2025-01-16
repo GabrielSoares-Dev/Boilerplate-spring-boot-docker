@@ -27,7 +27,7 @@ public class FindTaskByIdUseCase {
                 taskData.id,
                 taskData.title,
                 taskData.description,
-                taskData.creationDate,
-                taskData.status);
+                taskData.status,
+                taskData.createdAt);
     }
 }

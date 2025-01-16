@@ -7,19 +7,19 @@ public class FindTaskByIdRepositoryOutputDto {
     public Integer id;
     public String title;
     public String description;
-    public LocalDateTime creationDate;
     public TaskStatus status;
+    public LocalDateTime createdAt;
 
     public FindTaskByIdRepositoryOutputDto(
             Integer id,
             String title,
             String description,
-            LocalDateTime creationDate,
-            TaskStatus status) {
+            TaskStatus status,
+            LocalDateTime createdAt) {
         this.id = id;
         this.title = title;
         this.description = description;
-        this.creationDate = creationDate;
         this.status = status;
+        this.createdAt = createdAt;
     }
 }

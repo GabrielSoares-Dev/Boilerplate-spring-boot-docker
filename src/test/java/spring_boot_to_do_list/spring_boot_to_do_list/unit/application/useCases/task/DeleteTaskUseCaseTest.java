@@ -40,8 +40,8 @@ public class DeleteTaskUseCaseTest {
             defaultId,
             "Task 1",
             "Description 1",
-            LocalDateTime.now(),
-            TaskStatus.IN_PROGRESS
+            TaskStatus.IN_PROGRESS,
+            LocalDateTime.now()
         );
         when(taskRepository.findById(defaultId)).thenReturn(Optional.of(mockFindByIdOutput));
 

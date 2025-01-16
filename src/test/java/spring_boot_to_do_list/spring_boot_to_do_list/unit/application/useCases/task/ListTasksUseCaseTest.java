@@ -32,9 +32,17 @@ public class ListTasksUseCaseTest {
     public void testListTasks() {
         LocalDateTime currentDate = LocalDateTime.now();
         FindAllTasksRepositoryOutputDto task1 = new FindAllTasksRepositoryOutputDto(
-                1, "Task 1", "Description 1", currentDate, TaskStatus.PENDING);
+                1,
+                "Task 1",
+                "Description 1",
+                TaskStatus.PENDING,
+                currentDate);
         FindAllTasksRepositoryOutputDto task2 = new FindAllTasksRepositoryOutputDto(
-                2, "Task 2", "Description 2", currentDate, TaskStatus.COMPLETED);
+                2,
+                "Task 2",
+                "Description 2",
+                TaskStatus.COMPLETED,
+                currentDate);
 
         when(taskRepository.findAll()).thenReturn(Arrays.asList(task1, task2));
 
@@ -44,14 +52,14 @@ public class ListTasksUseCaseTest {
         assertEquals(1, outputTask1.id);
         assertEquals("Task 1", outputTask1.title);
         assertEquals("Description 1", outputTask1.description);
-        assertEquals(currentDate, outputTask1.creationDate);
+        assertEquals(currentDate, outputTask1.createdAt);
         assertEquals(TaskStatus.PENDING, outputTask1.status);
 
         ListTasksUseCaseOutputDto outputTask2 = output.get(1);
         assertEquals(2, outputTask2.id);
         assertEquals("Task 2", outputTask2.title);
         assertEquals("Description 2", outputTask2.description);
-        assertEquals(currentDate, outputTask2.creationDate);
+        assertEquals(currentDate, outputTask2.createdAt);
         assertEquals(TaskStatus.COMPLETED, outputTask2.status);
     }
 }

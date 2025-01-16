@@ -21,8 +21,8 @@ public class ListTasksUseCase {
                         task.id,
                         task.title,
                         task.description,
-                        task.creationDate,
-                        task.status))
+                        task.status,
+                        task.createdAt))
                 .collect(Collectors.toList());
     }
 }
