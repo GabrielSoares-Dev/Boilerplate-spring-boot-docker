@@ -5,8 +5,6 @@ import spring_boot_to_do_list.spring_boot_to_do_list.application.dtos.useCases.t
 import spring_boot_to_do_list.spring_boot_to_do_list.application.exceptions.BusinessException;
 import spring_boot_to_do_list.spring_boot_to_do_list.application.repositories.TaskRepositoryInterface;
 import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
-import static org.mockito.Mockito.times;
-import static org.mockito.Mockito.verify;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;

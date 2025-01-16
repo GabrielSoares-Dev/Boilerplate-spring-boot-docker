@@ -1,5 +1,6 @@
 package spring_boot_to_do_list.spring_boot_to_do_list.infra.http.controllers;
 
+import java.util.List;
 import java.util.Map;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -14,10 +15,12 @@ import org.springframework.web.bind.annotation.RestController;
 import jakarta.validation.Valid;
 import spring_boot_to_do_list.spring_boot_to_do_list.application.dtos.useCases.task.create.CreateTaskUseCaseInputDto;
 import spring_boot_to_do_list.spring_boot_to_do_list.application.dtos.useCases.task.findById.FindTaskByIdUseCaseOutputDto;
+import spring_boot_to_do_list.spring_boot_to_do_list.application.dtos.useCases.task.list.ListTasksUseCaseOutputDto;
 import spring_boot_to_do_list.spring_boot_to_do_list.application.exceptions.BusinessException;
 import spring_boot_to_do_list.spring_boot_to_do_list.application.useCases.task.CreateTaskUseCase;
 import spring_boot_to_do_list.spring_boot_to_do_list.application.useCases.task.DeleteTaskUseCase;
 import spring_boot_to_do_list.spring_boot_to_do_list.application.useCases.task.FindTaskByIdUseCase;
+import spring_boot_to_do_list.spring_boot_to_do_list.application.useCases.task.ListTasksUseCase;
 import spring_boot_to_do_list.spring_boot_to_do_list.infra.helpers.BaseResponse;
 import spring_boot_to_do_list.spring_boot_to_do_list.infra.http.validators.task.CreateTaskValidator;
 
@@ -26,6 +29,9 @@ import spring_boot_to_do_list.spring_boot_to_do_list.infra.http.validators.task.
 public class TaskController {
     @Autowired
     private CreateTaskUseCase createTaskUseCase;
+
+    @Autowired
+    private ListTasksUseCase listTasksUseCase;
 
     @Autowired
     private FindTaskByIdUseCase findTaskByIdUseCase;
@@ -42,6 +48,12 @@ public class TaskController {
             String errorMessage = exception.getMessage();
             return BaseResponse.error(errorMessage, HttpStatus.INTERNAL_SERVER_ERROR);
         }
+    }
+
+    @GetMapping
+    public ResponseEntity<Map<String, Object>> list() {
+        List<ListTasksUseCaseOutputDto> output = this.listTasksUseCase.run();
+        return BaseResponse.successWithContent("Tasks retrieved successfully", HttpStatus.OK, output);
     }
 
     @GetMapping("/{id}")
