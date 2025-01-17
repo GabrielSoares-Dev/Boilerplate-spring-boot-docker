@@ -5,7 +5,7 @@ on:
     branches:
       - master
 jobs:
-  build:
+  spring-boot:
     runs-on: ubuntu-latest
     steps:
     - uses: actions/checkout@v3
@@ -14,10 +14,6 @@ jobs:
       with:
         distribution: 'temurin'
         java-version: '23'
-    - name: Set up Maven
-      uses: actions/setup-maven@v3
-      with:
-        maven-version: '3.8.7'
     - name: Install Dependencies
       run: mvn install -DskipTests
     - name: Code style check
