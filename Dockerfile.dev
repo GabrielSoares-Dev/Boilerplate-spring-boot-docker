@@ -1,6 +1,22 @@
-FROM eclipse-temurin:23-jdk
+FROM node:18-alpine AS node_stage
 
-RUN apt-get update && apt-get install -y maven git && apt-get clean
+WORKDIR /app/spring-boot-to-do-list
+
+COPY package.json package-lock.json ./
+
+RUN npm i
+
+FROM eclipse-temurin:23-jdk AS java_stage
+
+RUN apt-get update && apt-get install -y \
+    curl \
+    maven \
+    git \
+    nodejs \
+    && curl -L https://www.npmjs.com/install.sh | sh \
+    && apt-get clean
+
+RUN npm install -g npm@9.3.0
 
 WORKDIR /app/spring-boot-to-do-list
 

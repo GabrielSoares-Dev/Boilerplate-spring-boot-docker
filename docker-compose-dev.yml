@@ -11,6 +11,7 @@ services:
       - 8080:8080
     volumes:
       - .:/app/spring-boot-to-do-list
+      - volume-spring-boot-to-do-list-node_modules:/app/spring-boot-to-do-list/node_modules
     stdin_open: true
     tty: true
     depends_on:
@@ -24,13 +25,15 @@ services:
     ports:
       - "1433:1433"
     volumes:
-      - sql-server-volume:/var/opt/mssql
+      - volume-sql-server:/var/opt/mssql
     networks:
       - spring-boot-to-do-list-network
   
 volumes:
-  sql-server-volume:
-    name: sql-server-volume
+  volume-spring-boot-to-do-list-node_modules:
+    name: volume-spring-boot-to-do-list-node_modules
+  volume-sql-server:
+    name: volume-sql-server
 networks:
    spring-boot-to-do-list-network:
     name: spring-boot-to-do-list-network

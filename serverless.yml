@@ -1,0 +1,21 @@
+service: spring-boot-to-do-list
+
+provider:
+  name: aws
+  runtime: java17
+  memorySize: 512
+  timeout: 30
+
+package:
+  artifact: target/spring-boot-lambda.jar
+
+functions:
+  app:
+    handler: com.example.LambdaHandler
+    events:
+      - http:
+          path: /
+          method: any
+      - http:
+          path: /{proxy+}
+          method: any
