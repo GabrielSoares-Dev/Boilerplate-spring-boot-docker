@@ -1,0 +1,1 @@
+INSERT INTO tasks (id, title, description,status,created_at) VALUES (1, 'test title', 'test-description','PENDING',NOW());
