@@ -14,6 +14,8 @@ import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMock
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.MediaType;
 import org.springframework.test.context.ActiveProfiles;
+import org.springframework.test.context.jdbc.Sql;
+import org.springframework.test.context.jdbc.Sql.ExecutionPhase;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.ResultActions;
 
@@ -32,6 +34,7 @@ public class CreateTaskIntegrationTest {
   }
 
   @Test
+  @Sql(value = "classpath:reset-tasks.sql", executionPhase = ExecutionPhase.AFTER_TEST_METHOD)
   public void testCreated() throws Exception {
     Map<String, String> input = new HashMap<>();
     input.put("title", "test-title");
