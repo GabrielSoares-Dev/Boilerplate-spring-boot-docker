@@ -17,6 +17,6 @@ jobs:
     - name: Install Dependencies
       run: mvn install -DskipTests
     - name: Code style check
-      run: mvn checkstyle:check
+      run: mvn spotless:check
     - name: Run tests and generate coverage report
       run: mvn test jacoco:report
