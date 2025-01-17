@@ -4,7 +4,7 @@
     "scripts": {
         "install:java:dependencies": "mvn install -DskipTests",
         "start:dev": "mvn spring-boot:run",
-        "migrate": "mvn flyway:migrate",
+        "db:migrate": "mvn flyway:migrate",
         "lint:test": "mvn spotless:check",
         "lint:fix": "mvn spotless:apply",
         "test": "mvn test",

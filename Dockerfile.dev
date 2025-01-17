@@ -6,7 +6,7 @@ COPY package.json package-lock.json ./
 
 RUN npm i
 
-FROM eclipse-temurin:23-jdk AS java_stage
+FROM eclipse-temurin:21-jdk AS java_stage
 
 RUN apt-get update && apt-get install -y \
     curl \
