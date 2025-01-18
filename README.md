@@ -1,8 +1,23 @@
-# Projeto de Teste Técnico
+# Spring Boot to do list
 
 Este é um projeto criado para um teste técnico. Abaixo estão os detalhes sobre os comandos disponíveis, documentação no Postman e vídeos explicativos sobre como rodar o projeto em localhost, suas features e o processo de deploy.
 
+## Descrição do Projeto
+
+Este projeto foi desenvolvido utilizando Java com o framework Spring Boot, com o objetivo de criar uma aplicação de lista de tarefas. Durante o desenvolvimento, tive a oportunidade de aprender e aprimorar diversas habilidades técnicas, incluindo a configuração do Spring Boot, a criação de endpoints RESTful, a integração com bancos de dados e a implementação de testes automatizados. Este projeto não só me ajudou a entender melhor o ecossistema Java/Spring, mas também me proporcionou um valioso aprendizado prático que será útil em futuros projetos.
+
+# Requisitos
+
+- **Java 21**: Certifique-se de ter o JDK 21 instalado. Você pode baixá-lo do site oficial da Oracle ou usar um gerenciador de pacotes como SDKMAN.
+- **SQL Server**: Um banco de dados SQL Server deve estar disponível e configurado. Você pode usar uma instância local ou um serviço em nuvem.
+- **DevContainer**: O projeto utiliza DevContainers para desenvolvimento em ambientes isolados. Certifique-se de ter o Visual Studio Code e a extensão Remote - Containers instalada.
+- **Docker**: Docker é necessário para criar e gerenciar os contêineres do DevContainer. Instale o Docker Desktop ou Docker Engine.
+- **Node.js**: Node.js é necessário para executar scripts e ferramentas de desenvolvimento. Instale a versão mais recente do Node.js.
+
 ## Comandos Disponíveis
+
+- **docker**: `docker-compose -f docker-compose-dev.yml up -d`
+  - Este comando inicia a stack do docker com o projeto e o sql server.
 
 - **build**: `mvn package shade:shade -DskipTests -Pprod`
   - Este comando empacota o projeto, criando um arquivo JAR, sem executar os testes, e utilizando o perfil de produção.
@@ -33,7 +48,7 @@ Este é um projeto criado para um teste técnico. Abaixo estão os detalhes sobr
 
 ## Documentação no Postman
 
-A documentação da API pode ser encontrada no Postman através do seguinte link: [Documentação Postman](https://www.postman.com/collections/your-collection-link). Esta documentação inclui todos os endpoints disponíveis, métodos HTTP suportados, parâmetros necessários e exemplos de respostas.
+A documentação da API pode ser encontrada no Postman através do seguinte link: [Documentação Postman](https://documenter.getpostman.com/view/37022898/2sAYQamBFK). Esta documentação inclui todos os endpoints disponíveis, métodos HTTP suportados, parâmetros necessários e exemplos de respostas.
 
 ## Vídeos Explicativos
 
@@ -49,10 +64,4 @@ A documentação da API pode ser encontrada no Postman através do seguinte link
 
 [![Processo de Deploy](https://img.youtube.com/vi/9o80Xi5_MjY/0.jpg)](https://www.youtube.com/watch?v=9o80Xi5_MjY)
 
-## Contribuição
-
-Sinta-se à vontade para contribuir com este projeto. Para isso, faça um fork do repositório, crie uma branch para sua feature ou correção, e envie um pull request.
-
-## Licença
-
-Este projeto está licenciado sob a Licença MIT. Veja o arquivo [LICENSE](LICENSE) para mais detalhes.
+### By Gabriel Soares Maciel
