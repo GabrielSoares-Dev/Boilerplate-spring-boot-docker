@@ -14,6 +14,8 @@ services:
       - volume-spring-boot-to-do-list-node_modules:/app/spring-boot-to-do-list/node_modules
     stdin_open: true
     tty: true
+    env_file:
+      - .env
     depends_on:
       - sql-server
   sql-server:
