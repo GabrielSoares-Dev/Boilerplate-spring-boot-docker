@@ -132,4 +132,9 @@ public class TaskController {
       return BaseResponse.error(errorMessage, httpStatus);
     }
   }
+
+  @GetMapping("/hello")
+  public String hello() {
+    return "hello";
+  }
 }
