@@ -1,0 +1,4 @@
+api:
+  handler: spring_boot_to_do_list.spring_boot_to_do_list.infra.functions.api.HttpLambdaHandler
+  events:
+   - httpApi: '*'

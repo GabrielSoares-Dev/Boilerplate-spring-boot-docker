@@ -2,9 +2,9 @@ spring:
   application:
     name: spring_boot_to_do_list
   datasource:
-    url: jdbc:sqlserver://sql-server;databaseName=spring-boot-to-do-list;encrypt=false
-    username: sa
-    password: Sqlserver@2025
+    url: jdbc:sqlserver://${DB_HOST};databaseName=${DB_NAME};encrypt=false
+    username: ${DB_USERNAME}
+    password: ${DB_PASSWORD}
     driver-class-name: com.microsoft.sqlserver.jdbc.SQLServerDriver
   jpa:
     hibernate:
