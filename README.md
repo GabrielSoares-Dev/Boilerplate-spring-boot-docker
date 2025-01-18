@@ -4,10 +4,32 @@ Este é um projeto criado para um teste técnico. Abaixo estão os detalhes sobr
 
 ## Comandos Disponíveis
 
-- `npm install`: Instala todas as dependências necessárias para o projeto.
-- `npm start`: Inicia o servidor local na porta especificada (geralmente `localhost:3000`).
-- `npm test`: Executa a suíte de testes para garantir que todas as funcionalidades estão funcionando corretamente.
-- `npm run build`: Gera a versão de produção do projeto.
+- **build**: `mvn package shade:shade -DskipTests -Pprod`
+  - Este comando empacota o projeto, criando um arquivo JAR, sem executar os testes, e utilizando o perfil de produção.
+
+- **deploy**: `serverless deploy`
+  - Este comando realiza o deploy do projeto utilizando o framework Serverless.
+
+- **install:java:dependencies**: `mvn install -DskipTests`
+  - Este comando instala todas as dependências do projeto, sem executar os testes.
+
+- **start:dev**: `mvn spring-boot:run`
+  - Este comando inicia o projeto em modo de desenvolvimento utilizando o Spring Boot.
+
+- **db:migrate**: `mvn flyway:migrate`
+  - Este comando aplica as migrações de banco de dados utilizando o Flyway.
+
+- **lint:test**: `mvn spotless:check`
+  - Este comando verifica se o código está formatado corretamente utilizando o Spotless.
+
+- **lint:fix**: `mvn spotless:apply`
+  - Este comando formata o código automaticamente utilizando o Spotless.
+
+- **test**: `mvn test`
+  - Este comando executa os testes do projeto.
+
+- **test:coverage**: `mvn test jacoco:report`
+  - Este comando executa os testes e gera um relatório de cobertura de testes utilizando o JaCoCo.
 
 ## Documentação no Postman
 
@@ -17,7 +39,7 @@ A documentação da API pode ser encontrada no Postman através do seguinte link
 
 ### Rodando o Projeto em Localhost
 
-[![Rodando em Localhost](https://img.youtube.com/vi/your-video-id/0.jpg)](https://www.youtube.com/watch?v=your-video-id)
+[![Rodando em Localhost](https://img.youtube.com/vi/cTVy5op7oSU/0.jpg)](https://www.youtube.com/watch?v=cTVy5op7oSU)
 
 ### Features do Projeto
 
@@ -25,7 +47,7 @@ A documentação da API pode ser encontrada no Postman através do seguinte link
 
 ### Processo de Deploy
 
-[![Processo de Deploy](https://img.youtube.com/vi/your-video-id/0.jpg)](https://www.youtube.com/watch?v=your-video-id)
+[![Processo de Deploy](https://img.youtube.com/vi/9o80Xi5_MjY/0.jpg)](https://www.youtube.com/watch?v=9o80Xi5_MjY)
 
 ## Contribuição
 
