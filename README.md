@@ -19,31 +19,31 @@ Este projeto foi desenvolvido utilizando Java com o framework Spring Boot, com o
 - **docker**: `docker-compose -f docker-compose-dev.yml up -d`
   - Este comando inicia a stack do docker com o projeto e o sql server.
 
-- **build**: `mvn package shade:shade -DskipTests -Pprod`
+- **npm run build**: `mvn package shade:shade -DskipTests -Pprod`
   - Este comando empacota o projeto, criando um arquivo JAR, sem executar os testes, e utilizando o perfil de produção.
 
-- **deploy**: `serverless deploy`
+- **npm run deploy**: `serverless deploy`
   - Este comando realiza o deploy do projeto utilizando o framework Serverless.
 
-- **install:java:dependencies**: `mvn install -DskipTests`
+- **npm install:java:dependencies**: `mvn install -DskipTests`
   - Este comando instala todas as dependências do projeto, sem executar os testes.
 
-- **start:dev**: `mvn spring-boot:run`
+- **npm run start:dev**: `mvn spring-boot:run`
   - Este comando inicia o projeto em modo de desenvolvimento utilizando o Spring Boot.
 
-- **db:migrate**: `mvn flyway:migrate`
+- **npm run db:migrate**: `mvn flyway:migrate`
   - Este comando aplica as migrações de banco de dados utilizando o Flyway.
 
-- **lint:test**: `mvn spotless:check`
+- **npm run lint:test**: `mvn spotless:check`
   - Este comando verifica se o código está formatado corretamente utilizando o Spotless.
 
-- **lint:fix**: `mvn spotless:apply`
+- **npm run lint:fix**: `mvn spotless:apply`
   - Este comando formata o código automaticamente utilizando o Spotless.
 
-- **test**: `mvn test`
+- **npm run test**: `mvn test`
   - Este comando executa os testes do projeto.
 
-- **test:coverage**: `mvn test jacoco:report`
+- **npm run test:coverage**: `mvn test jacoco:report`
   - Este comando executa os testes e gera um relatório de cobertura de testes utilizando o JaCoCo.
 
 ## Documentação no Postman
