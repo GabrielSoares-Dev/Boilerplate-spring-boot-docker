@@ -1,4 +1,4 @@
-# Spring Boot to do list
+# Spring Boot base
 
 Este é um projeto criado para um teste técnico. Abaixo estão os detalhes sobre os comandos disponíveis, documentação no Postman e vídeos explicativos sobre como rodar o projeto em localhost, suas features e o processo de deploy.
 
@@ -8,11 +8,9 @@ Este projeto foi desenvolvido utilizando Java com o framework Spring Boot, com o
 
 # Requisitos
 
-- **Java 21**: Certifique-se de ter o JDK 21 instalado. Você pode baixá-lo do site oficial da Oracle ou usar um gerenciador de pacotes como SDKMAN.
 - **SQL Server**: Um banco de dados SQL Server deve estar disponível e configurado. Você pode usar uma instância local ou um serviço em nuvem.
 - **DevContainer**: O projeto utiliza DevContainers para desenvolvimento em ambientes isolados. Certifique-se de ter o Visual Studio Code e a extensão Remote - Containers instalada.
 - **Docker**: Docker é necessário para criar e gerenciar os contêineres do DevContainer. Instale o Docker Desktop ou Docker Engine.
-- **Node.js**: Node.js é necessário para executar scripts e ferramentas de desenvolvimento. Instale a versão mais recente do Node.js.
 
 ## Comandos Disponíveis
 
@@ -63,5 +61,3 @@ A documentação da API pode ser encontrada no Postman através do seguinte link
 ### Processo de Deploy
 
 [![Processo de Deploy](https://img.youtube.com/vi/9o80Xi5_MjY/0.jpg)](https://www.youtube.com/watch?v=9o80Xi5_MjY)
-
-### By Gabriel Soares Maciel
