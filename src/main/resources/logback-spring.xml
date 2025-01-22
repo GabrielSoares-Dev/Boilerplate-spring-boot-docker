@@ -8,7 +8,7 @@
         <appender-ref ref="CONSOLE" />
     </root>
 
-    <logger name="spring_boot_to_do_list.spring_boot_to_do_list" level="DEBUG" additivity="false">
+    <logger name="spring_boot_base.spring_boot_base" level="DEBUG" additivity="false">
         <appender-ref ref="CONSOLE" />
     </logger>
 </configuration>
