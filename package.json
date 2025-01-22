@@ -2,8 +2,7 @@
     "private": true,
     "type": "module",
     "scripts": {
-        "build": "mvn package shade:shade -DskipTests -Pprod",
-        "deploy": "serverless deploy",
+        "build": "mvn clean package -DskipTests",
         "install:java:dependencies": "mvn install -DskipTests",
         "start:dev": "mvn spring-boot:run",
         "db:migrate": "mvn flyway:migrate",
@@ -12,7 +11,5 @@
         "test": "mvn test",
         "test:coverage": "mvn test jacoco:report"
     },
-    "devDependencies": {
-        "serverless": "^3.0.0"
-    }
+    "devDependencies": {}
 }
