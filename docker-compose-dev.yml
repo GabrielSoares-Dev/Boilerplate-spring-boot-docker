@@ -1,42 +1,42 @@
 version: '3.5'
 services:
-  spring-boot-to-do-list:
-    container_name: spring-boot-to-do-list
+  spring-boot-base:
+    container_name: spring-boot-base
     build:
       context: .
       dockerfile: Dockerfile.dev 
     networks:
-      - spring-boot-to-do-list-network
+      - spring-boot-base-network
     ports:
       - 8080:8080
     volumes:
-      - .:/app/spring-boot-to-do-list
-      - volume-spring-boot-to-do-list-node_modules:/app/spring-boot-to-do-list/node_modules
+      - .:/app/spring-boot-base
+      - volume-spring-boot-base-node_modules:/app/spring-boot-base/node_modules
     stdin_open: true
     tty: true
     env_file:
       - .env
-    depends_on:
-      - sql-server
-  sql-server:
-    image: mcr.microsoft.com/mssql/server:2019-latest
-    container_name: sql-server
-    environment:
-      SA_PASSWORD: Sqlserver@2025
-      ACCEPT_EULA: Y
-    ports:
-      - "1433:1433"
-    volumes:
-      - volume-sql-server:/var/opt/mssql
-    networks:
-      - spring-boot-to-do-list-network
+    # depends_on:
+    #   - sql-server
+  # sql-server:
+  #   image: mcr.microsoft.com/mssql/server:2019-latest
+  #   container_name: sql-server
+  #   environment:
+  #     SA_PASSWORD: Sqlserver@2025
+  #     ACCEPT_EULA: Y
+  #   ports:
+  #     - "1433:1433"
+  #   volumes:
+  #     - volume-sql-server:/var/opt/mssql
+  #   networks:
+  #     - spring-boot-to-do-list-network
   
 volumes:
-  volume-spring-boot-to-do-list-node_modules:
-    name: volume-spring-boot-to-do-list-node_modules
-  volume-sql-server:
-    name: volume-sql-server
+  volume-spring-boot-base-node_modules:
+    name: volume-spring-boot-base-node_modules
+  # volume-sql-server:
+  #   name: volume-sql-server
 networks:
-   spring-boot-to-do-list-network:
-    name: spring-boot-to-do-list-network
+   spring-boot-base-network:
+    name: spring-boot-base-network
     driver: bridge

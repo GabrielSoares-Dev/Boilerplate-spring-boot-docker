@@ -9,11 +9,11 @@
 		<version>3.4.1</version>
 		<relativePath /> <!-- lookup parent from repository -->
 	</parent>
-	<groupId>spring_boot_to_do_list</groupId>
-	<artifactId>spring_boot_to_do-list</artifactId>
+	<groupId>spring_boot_base</groupId>
+	<artifactId>spring_boot_base</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
-	<name>spring_boot_to_do-list</name>
-	<description>to do list in spring boot</description>
+	<name>spring_boot_base</name>
+	<description>spring boot project base</description>
 	<url />
 	<licenses>
 		<license />

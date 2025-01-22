@@ -1,6 +1,6 @@
 spring:
   application:
-    name: spring_boot_to_do_list
+    name: spring_boot_base
   datasource:
     url: jdbc:sqlserver://${DB_HOST};databaseName=${DB_NAME};encrypt=false
     username: ${DB_USERNAME}
