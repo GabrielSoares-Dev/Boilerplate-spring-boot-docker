@@ -11,7 +11,6 @@ import java.time.LocalDateTime;
 @Entity
 @Table(name = "hello")
 public class Hello {
-
   @Id
   @GeneratedValue(strategy = GenerationType.IDENTITY)
   private Integer id;
@@ -24,4 +23,8 @@ public class Hello {
 
   @Column(name = "updated_at")
   private LocalDateTime updatedAt;
+
+  public void setName(String name) {
+    this.name = name;
+  }
 }

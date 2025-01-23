@@ -9,6 +9,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.ActiveProfiles;
+import org.springframework.test.context.jdbc.Sql;
+import org.springframework.test.context.jdbc.Sql.ExecutionPhase;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.ResultActions;
 
@@ -22,6 +24,7 @@ public class HelloIntegrationTest {
   private String path = "/v1/hello";
 
   @Test
+  @Sql(value = "classpath:reset.sql", executionPhase = ExecutionPhase.AFTER_TEST_METHOD)
   public void testHello() throws Exception {
     ResultActions output = this.mockRequest.perform(get(this.path + "/test-name"));
 
