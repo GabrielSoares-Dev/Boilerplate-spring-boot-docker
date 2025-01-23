@@ -7,6 +7,7 @@ services:
       dockerfile: Dockerfile.dev 
     networks:
       - spring-boot-base-network
+      - postgres-network
     ports:
       - 8080:8080
     volumes:
@@ -16,27 +17,14 @@ services:
     tty: true
     env_file:
       - .env
-    # depends_on:
-    #   - sql-server
-  # sql-server:
-  #   image: mcr.microsoft.com/mssql/server:2019-latest
-  #   container_name: sql-server
-  #   environment:
-  #     SA_PASSWORD: Sqlserver@2025
-  #     ACCEPT_EULA: Y
-  #   ports:
-  #     - "1433:1433"
-  #   volumes:
-  #     - volume-sql-server:/var/opt/mssql
-  #   networks:
-  #     - spring-boot-to-do-list-network
-  
 volumes:
   volume-spring-boot-base-node_modules:
     name: volume-spring-boot-base-node_modules
-  # volume-sql-server:
-  #   name: volume-sql-server
+
 networks:
    spring-boot-base-network:
     name: spring-boot-base-network
     driver: bridge
+   postgres-network:
+    name: postgres-network
+    external: true

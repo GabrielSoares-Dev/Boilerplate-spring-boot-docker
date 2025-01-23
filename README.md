@@ -8,7 +8,6 @@ Este projeto foi desenvolvido utilizando Java com o framework Spring Boot, com o
 
 # Requisitos
 
-- **SQL Server**: Um banco de dados SQL Server deve estar disponível e configurado. Você pode usar uma instância local ou um serviço em nuvem.
 - **DevContainer**: O projeto utiliza DevContainers para desenvolvimento em ambientes isolados. Certifique-se de ter o Visual Studio Code e a extensão Remote - Containers instalada.
 - **Docker**: Docker é necessário para criar e gerenciar os contêineres do DevContainer. Instale o Docker Desktop ou Docker Engine.
 
