@@ -5,7 +5,7 @@ spring:
     url: jdbc:postgresql://${DB_HOST}/${DB_NAME}
     username: ${DB_USERNAME}
     password: ${DB_PASSWORD}
-    driver-class-name: org.hibernate.dialect.PostgreSQLDialect
+    driver-class-name: org.postgresql.Driver
   jpa:
     hibernate:
       ddl-auto: none
@@ -15,3 +15,8 @@ spring:
         show_sql: false
   flyway:
     enabled: false
+    
+springdoc:
+  swagger-ui:
+    enabled: ${SWAGGER_ENABLED}
+    path: /docs
