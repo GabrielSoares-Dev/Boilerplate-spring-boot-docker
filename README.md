@@ -1,62 +1,51 @@
-# Spring Boot base
+# Spring Boot Base Project
 
-Este é um projeto criado para um teste técnico. Abaixo estão os detalhes sobre os comandos disponíveis, documentação no Postman e vídeos explicativos sobre como rodar o projeto em localhost, suas features e o processo de deploy.
+Este é um projeto base para aplicações Spring Boot, configurado com PostgreSQL, Swagger para documentação da API e integração contínua com GitHub Actions.
 
-## Descrição do Projeto
+## Comandos
 
-Este projeto foi desenvolvido utilizando Java com o framework Spring Boot, com o objetivo de criar uma aplicação de lista de tarefas. Durante o desenvolvimento, tive a oportunidade de aprender e aprimorar diversas habilidades técnicas, incluindo a configuração do Spring Boot, a criação de endpoints RESTful, a integração com bancos de dados e a implementação de testes automatizados. Este projeto não só me ajudou a entender melhor o ecossistema Java/Spring, mas também me proporcionou um valioso aprendizado prático que será útil em futuros projetos.
+- `npm run build`: Executa o comando `mvn clean package -DskipTests` para compilar o projeto sem executar os testes.
+- `npm run install:java:dependencies`: Executa o comando `mvn install -DskipTests` para instalar as dependências Java sem executar os testes.
+- `npm run start:dev`: Executa o comando `mvn spring-boot:run` para iniciar a aplicação em modo de desenvolvimento.
+- `npm run db:migrate`: Executa o comando `mvn flyway:migrate` para aplicar as migrações do banco de dados.
+- `npm run lint:test`: Executa o comando `mvn spotless:check` para verificar o estilo do código.
+- `npm run lint:fix`: Executa o comando `mvn spotless:apply` para corrigir o estilo do código.
+- `npm run test`: Executa o comando `mvn test` para rodar os testes.
+- `npm run test:coverage`: Executa o comando `mvn test jacoco:report` para rodar os testes e gerar um relatório de cobertura.
 
-# Requisitos
+## Documentação da API
 
-- **DevContainer**: O projeto utiliza DevContainers para desenvolvimento em ambientes isolados. Certifique-se de ter o Visual Studio Code e a extensão Remote - Containers instalada.
-- **Docker**: Docker é necessário para criar e gerenciar os contêineres do DevContainer. Instale o Docker Desktop ou Docker Engine.
+A documentação da API está disponível no Swagger ao rodar o projeto. Acesse [Swagger UI](http://localhost:8080/docs) para visualizar todos os endpoints disponíveis, métodos HTTP suportados, parâmetros necessários e exemplos de respostas.
 
-## Comandos Disponíveis
+## Passo a Passo para Rodar o Projeto
 
-- **docker**: `docker-compose -f docker-compose-dev.yml up -d`
-  - Este comando inicia a stack do docker com o projeto e o sql server.
+1. **Instale a extensão Dev Containers no VS Code**:
+   - Abra o VS Code e vá para a aba de extensões.
+   - Procure por "Dev Containers" e instale a extensão.
 
-- **npm run build**: `mvn package shade:shade -DskipTests -Pprod`
-  - Este comando empacota o projeto, criando um arquivo JAR, sem executar os testes, e utilizando o perfil de produção.
+2. **Rode o Docker Compose**:
+   - No terminal, execute o comando:
+     ```sh
+     docker-compose -f docker-compose-dev.yml up -d
+     ```
 
-- **npm run deploy**: `serverless deploy`
-  - Este comando realiza o deploy do projeto utilizando o framework Serverless.
+3. **Entre no Container usando a Extensão Dev Containers**:
+   - No VS Code, abra o comando `Dev Containers: Attach to Running Container...` e selecione o container do projeto.
 
-- **npm install:java:dependencies**: `mvn install -DskipTests`
-  - Este comando instala todas as dependências do projeto, sem executar os testes.
+4. **Crie o Banco de Dados do Projeto**:
+   - Entre na sua IDE de banco de dados e crie o banco do projeto
 
-- **npm run start:dev**: `mvn spring-boot:run`
-  - Este comando inicia o projeto em modo de desenvolvimento utilizando o Spring Boot.
+5. **Rode o Comando de Migração**:
+   - Ainda no terminal dentro do container, execute o comando de migração:
+     ```sh
+     npm run db:migrate
+     ```
 
-- **npm run db:migrate**: `mvn flyway:migrate`
-  - Este comando aplica as migrações de banco de dados utilizando o Flyway.
+6. **Startar o Projeto**:
+   - No terminal dentro do container, execute o comando para iniciar o projeto:
+     ```sh
+     npm run start:dev
+     ```
 
-- **npm run lint:test**: `mvn spotless:check`
-  - Este comando verifica se o código está formatado corretamente utilizando o Spotless.
-
-- **npm run lint:fix**: `mvn spotless:apply`
-  - Este comando formata o código automaticamente utilizando o Spotless.
-
-- **npm run test**: `mvn test`
-  - Este comando executa os testes do projeto.
-
-- **npm run test:coverage**: `mvn test jacoco:report`
-  - Este comando executa os testes e gera um relatório de cobertura de testes utilizando o JaCoCo.
-
-## Documentação no Postman
-
-A documentação da API pode ser encontrada no Postman através do seguinte link: [Documentação Postman](https://documenter.getpostman.com/view/37022898/2sAYQamBFK). Esta documentação inclui todos os endpoints disponíveis, métodos HTTP suportados, parâmetros necessários e exemplos de respostas.
-
-## Vídeos Explicativos
-
-### Rodando o Projeto em Localhost
-
-[![Rodando em Localhost](https://img.youtube.com/vi/cTVy5op7oSU/0.jpg)](https://www.youtube.com/watch?v=cTVy5op7oSU)
-
-### Features do Projeto
-
-[![Features do Projeto](https://img.youtube.com/vi/DfWLC354qDI/0.jpg)](https://www.youtube.com/watch?v=DfWLC354qDI)
-
-### Processo de Deploy
-
-[![Processo de Deploy](https://img.youtube.com/vi/9o80Xi5_MjY/0.jpg)](https://www.youtube.com/watch?v=9o80Xi5_MjY)
+7. **Acesse o Projeto**:
+   - O projeto estará disponível na porta 8080. Acesse [http://localhost:8080](http://localhost:8080) no seu navegador.
