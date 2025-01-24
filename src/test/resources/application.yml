@@ -2,16 +2,14 @@ spring:
   application:
     name: boilerplate_spring_boot_docker_test
   datasource:
-    url: jdbc:postgresql://${DB_HOST}/${DB_NAME}-test
-    username: ${DB_USERNAME}
-    password: ${DB_PASSWORD}
-    driver-class-name: org.postgresql.Driver
+    url: jdbc:h2:mem:testdb
+    driver-class-name: org.h2.Driver
   jpa:
     hibernate:
       ddl-auto: create-drop
     properties:
       hibernate:
-        dialect: org.hibernate.dialect.PostgreSQLDialect
+        dialect: org.hibernate.dialect.H2Dialect
         show_sql: false
   flyway:
     enabled: false

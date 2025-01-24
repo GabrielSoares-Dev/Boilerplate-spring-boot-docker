@@ -1,7 +1,11 @@
 package boilerplate_spring_boot_docker.boilerplate_spring_boot_docker.application.useCases.user;
 
+import boilerplate_spring_boot_docker.boilerplate_spring_boot_docker.application.dtos.repositories.user.create.CreateUserRepositoryInputDto;
 import boilerplate_spring_boot_docker.boilerplate_spring_boot_docker.application.dtos.useCases.user.create.CreateUserUseCaseInputDto;
+import boilerplate_spring_boot_docker.boilerplate_spring_boot_docker.application.exceptions.BusinessException;
+import boilerplate_spring_boot_docker.boilerplate_spring_boot_docker.application.repositories.UserRepositoryInterface;
 import boilerplate_spring_boot_docker.boilerplate_spring_boot_docker.application.services.LoggerServiceInterface;
+import boilerplate_spring_boot_docker.boilerplate_spring_boot_docker.domain.entities.User;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -9,10 +13,38 @@ import org.springframework.stereotype.Service;
 public class CreateUserUseCase {
   @Autowired private LoggerServiceInterface loggerService;
 
+  @Autowired private UserRepositoryInterface userRepository;
+
   private String logContext = "CreateUserUseCase";
 
-  public void run(CreateUserUseCaseInputDto input) {
+  private void validate(CreateUserUseCaseInputDto input) throws BusinessException {
+    User entity = new User(input.name, input.email, input.phoneNumber, input.password);
+    entity.create();
+  }
+
+  private boolean foundUserBySameEmail(String email) {
+    return this.userRepository.findByEmail(email).isPresent();
+  }
+
+  private void saveIntoDatabase(CreateUserUseCaseInputDto input) {
+    this.userRepository.create(
+        new CreateUserRepositoryInputDto(
+            input.name, input.email, input.phoneNumber, input.password));
+  }
+
+  public void run(CreateUserUseCaseInputDto input) throws BusinessException {
     this.loggerService.debug(String.format("Start %s with input: ", this.logContext), input);
+
+    this.validate(input);
+
+    boolean foundUserBySameEmail = this.foundUserBySameEmail(input.email);
+    this.loggerService.debug("found user by same email: ", foundUserBySameEmail);
+
+    if (foundUserBySameEmail) {
+      throw new BusinessException("User already exists");
+    }
+
+    this.saveIntoDatabase(input);
 
     this.loggerService.debug(String.format("Finish %s ", this.logContext));
   }
