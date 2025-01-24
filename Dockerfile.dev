@@ -1,6 +1,6 @@
 FROM node:18-alpine AS node_stage
 
-WORKDIR /app/spring-boot-base
+WORKDIR /app/boilerplate-spring-boot-docker
 
 COPY package.json package-lock.json ./
 
@@ -18,7 +18,7 @@ RUN apt-get update && apt-get install -y \
 
 RUN npm install -g npm@9.3.0
 
-WORKDIR /app/spring-boot-base
+WORKDIR /app/boilerplate-spring-boot-docker
 
 COPY . .
 

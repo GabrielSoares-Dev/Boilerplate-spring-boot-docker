@@ -1,22 +1,17 @@
 spring:
   application:
-    name: spring_boot_base
+    name: boilerplate_spring_boot_docker
   datasource:
-    url: jdbc:postgresql://${DB_HOST}/${DB_NAME}
+    url: jdbc:mysql://${DB_HOST}/${DB_NAME}
     username: ${DB_USERNAME}
     password: ${DB_PASSWORD}
-    driver-class-name: org.postgresql.Driver
+    driver-class-name: com.mysql.cj.jdbc.Driver
   jpa:
     hibernate:
       ddl-auto: none
     properties:
       hibernate:
-        dialect: org.hibernate.dialect.PostgreSQLDialect
+        dialect: org.hibernate.dialect.MySQLDialect
         show_sql: false
   flyway:
     enabled: false
-    
-springdoc:
-  swagger-ui:
-    enabled: ${SWAGGER_ENABLED}
-    path: /docs
