@@ -12,6 +12,7 @@ import boilerplate_spring_boot_docker.boilerplate_spring_boot_docker.application
 import boilerplate_spring_boot_docker.boilerplate_spring_boot_docker.application.dtos.useCases.user.create.CreateUserUseCaseInputDto;
 import boilerplate_spring_boot_docker.boilerplate_spring_boot_docker.application.exceptions.BusinessException;
 import boilerplate_spring_boot_docker.boilerplate_spring_boot_docker.application.repositories.UserRepositoryInterface;
+import boilerplate_spring_boot_docker.boilerplate_spring_boot_docker.application.services.EncryptionServiceInterface;
 import boilerplate_spring_boot_docker.boilerplate_spring_boot_docker.application.services.LoggerServiceInterface;
 import boilerplate_spring_boot_docker.boilerplate_spring_boot_docker.application.useCases.user.CreateUserUseCase;
 import java.util.Optional;
@@ -24,6 +25,8 @@ import org.mockito.MockitoAnnotations;
 
 public class CreateUserUseCaseTest {
   @Mock private LoggerServiceInterface loggerServiceInterface;
+
+  @Mock private EncryptionServiceInterface encryptionService;
 
   @Mock private UserRepositoryInterface userRepository;
 
@@ -41,6 +44,7 @@ public class CreateUserUseCaseTest {
   @Test
   public void testCreate() throws BusinessException {
     when(this.userRepository.findByEmail(this.defaultInput.email)).thenReturn(Optional.empty());
+    when(this.encryptionService.encrypt(this.defaultInput.password)).thenReturn("encrypt-test");
 
     assertDoesNotThrow(
         () -> {
@@ -48,6 +52,7 @@ public class CreateUserUseCaseTest {
         });
 
     verify(this.userRepository, times(1)).findByEmail(this.defaultInput.email);
+    verify(this.encryptionService, times(1)).encrypt(this.defaultInput.password);
 
     ArgumentCaptor<CreateUserRepositoryInputDto> captor =
         ArgumentCaptor.forClass(CreateUserRepositoryInputDto.class);
@@ -57,7 +62,7 @@ public class CreateUserUseCaseTest {
     assertEquals(this.defaultInput.name, capturedArgument.name);
     assertEquals(this.defaultInput.email, capturedArgument.email);
     assertEquals(this.defaultInput.phoneNumber, capturedArgument.phoneNumber);
-    assertEquals(this.defaultInput.password, capturedArgument.password);
+    assertEquals("encrypt-test", capturedArgument.password);
   }
 
   @Test

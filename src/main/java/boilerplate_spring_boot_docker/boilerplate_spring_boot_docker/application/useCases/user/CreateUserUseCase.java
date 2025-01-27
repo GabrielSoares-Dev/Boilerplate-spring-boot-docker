@@ -4,6 +4,7 @@ import boilerplate_spring_boot_docker.boilerplate_spring_boot_docker.application
 import boilerplate_spring_boot_docker.boilerplate_spring_boot_docker.application.dtos.useCases.user.create.CreateUserUseCaseInputDto;
 import boilerplate_spring_boot_docker.boilerplate_spring_boot_docker.application.exceptions.BusinessException;
 import boilerplate_spring_boot_docker.boilerplate_spring_boot_docker.application.repositories.UserRepositoryInterface;
+import boilerplate_spring_boot_docker.boilerplate_spring_boot_docker.application.services.EncryptionServiceInterface;
 import boilerplate_spring_boot_docker.boilerplate_spring_boot_docker.application.services.LoggerServiceInterface;
 import boilerplate_spring_boot_docker.boilerplate_spring_boot_docker.domain.entities.User;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -12,6 +13,8 @@ import org.springframework.stereotype.Service;
 @Service
 public class CreateUserUseCase {
   @Autowired private LoggerServiceInterface loggerService;
+
+  @Autowired private EncryptionServiceInterface encryptionService;
 
   @Autowired private UserRepositoryInterface userRepository;
 
@@ -26,10 +29,15 @@ public class CreateUserUseCase {
     return this.userRepository.findByEmail(email).isPresent();
   }
 
+  private String encryptPassword(String password) {
+    return this.encryptionService.encrypt(password);
+  }
+
   private void saveIntoDatabase(CreateUserUseCaseInputDto input) {
+    String password = this.encryptPassword(input.password);
+
     this.userRepository.create(
-        new CreateUserRepositoryInputDto(
-            input.name, input.email, input.phoneNumber, input.password));
+        new CreateUserRepositoryInputDto(input.name, input.email, input.phoneNumber, password));
   }
 
   public void run(CreateUserUseCaseInputDto input) throws BusinessException {
