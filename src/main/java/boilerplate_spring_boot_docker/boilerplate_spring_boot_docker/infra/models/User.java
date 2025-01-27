@@ -8,12 +8,15 @@ import jakarta.persistence.Id;
 import jakarta.persistence.Index;
 import jakarta.persistence.Table;
 import java.time.LocalDateTime;
+import java.util.Collection;
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.userdetails.UserDetails;
 
 @Entity
 @Table(
     name = "users",
     indexes = {@Index(name = "index_users_deleted_at", columnList = "deleted_at")})
-public class User {
+public class User implements UserDetails {
   @Id
   @GeneratedValue(strategy = GenerationType.IDENTITY)
   private Integer id;
@@ -65,5 +68,20 @@ public class User {
 
   public void setPassword(String password) {
     this.password = password;
+  }
+
+  @Override
+  public Collection<? extends GrantedAuthority> getAuthorities() {
+    return null;
+  }
+
+  @Override
+  public String getPassword() {
+    return null;
+  }
+
+  @Override
+  public String getUsername() {
+    return this.email;
   }
 }
