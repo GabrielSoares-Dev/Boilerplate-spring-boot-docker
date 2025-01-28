@@ -13,3 +13,6 @@ spring:
         show_sql: false
   flyway:
     enabled: false
+  jwt:
+    secret: test
+    expiration: 1000

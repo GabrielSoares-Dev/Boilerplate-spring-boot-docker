@@ -15,3 +15,6 @@ spring:
         show_sql: false
   flyway:
     enabled: false
+  jwt:
+    secret: ${JWT_SECRET}
+    expiration: ${JWT_EXPIRATION_TIME}

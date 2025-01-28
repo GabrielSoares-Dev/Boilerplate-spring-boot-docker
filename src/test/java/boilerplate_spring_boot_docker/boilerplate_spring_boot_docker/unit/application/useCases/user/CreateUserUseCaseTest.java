@@ -69,7 +69,8 @@ public class CreateUserUseCaseTest {
   public void testNotCreateIfFoundUserBySameEmail() throws BusinessException {
 
     FindUserByEmailRepositoryOutputDto findByEmailOutputMock =
-        new FindUserByEmailRepositoryOutputDto(1, "John Doe", "john.doe@example.com");
+        new FindUserByEmailRepositoryOutputDto(
+            1, "John Doe", "john.doe@example.com", "password-test");
 
     when(this.userRepository.findByEmail(this.defaultInput.email))
         .thenReturn(Optional.of(findByEmailOutputMock));
