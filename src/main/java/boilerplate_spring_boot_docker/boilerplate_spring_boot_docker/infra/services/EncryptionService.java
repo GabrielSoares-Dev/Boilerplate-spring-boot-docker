@@ -17,4 +17,9 @@ public class EncryptionService implements EncryptionServiceInterface {
   public String encrypt(String value) {
     return this.passwordEncoder.encode(value);
   }
+
+  @Override
+  public boolean matches(String rawValue, String encryptedValue) {
+    return this.passwordEncoder.matches(rawValue, encryptedValue);
+  }
 }

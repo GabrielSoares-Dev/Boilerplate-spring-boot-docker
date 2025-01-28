@@ -36,7 +36,7 @@ public class UserRepository implements UserRepositoryInterface {
 
     FindUserByEmailRepositoryOutputDto output =
         new FindUserByEmailRepositoryOutputDto(
-            userData.getId(), userData.getName(), userData.getEmail());
+            userData.getId(), userData.getName(), userData.getEmail(), userData.getPassword());
 
     return Optional.of(output);
   }

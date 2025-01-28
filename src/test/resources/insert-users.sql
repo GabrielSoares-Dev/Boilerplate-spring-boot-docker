@@ -1,2 +1,2 @@
 INSERT INTO users (name, email, phone_number, password, created_at, updated_at)
-VALUES ('John Doe', 'john.doe@example.com', '12345678901', 'Password@123', CURRENT_TIMESTAMP, CURRENT_TIMESTAMP);
+VALUES ('John Doe', 'john.doe@example.com', '12345678901', '$2a$10$OpZ1FZhv2yKES9WienOmsO5lus79.4C5uQdcBOxObS0dkNem71PXG', CURRENT_TIMESTAMP, CURRENT_TIMESTAMP);

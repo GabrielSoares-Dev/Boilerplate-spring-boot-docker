@@ -41,7 +41,7 @@ public class UserController {
       if (isAlreadyExistsError) {
         httpStatus = HttpStatus.BAD_REQUEST;
       }
-      this.loggerService.error("Error:", errorMessage);
+      this.loggerService.error("Error: ", errorMessage);
       return BaseResponse.error(errorMessage, httpStatus);
     }
   }

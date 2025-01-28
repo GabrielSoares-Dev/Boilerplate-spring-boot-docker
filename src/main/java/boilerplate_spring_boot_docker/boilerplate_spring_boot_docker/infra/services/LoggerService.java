@@ -5,9 +5,9 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.stereotype.Component;
+import org.springframework.stereotype.Service;
 
-@Component
+@Service
 public class LoggerService implements LoggerServiceInterface {
   private final Logger logger = LoggerFactory.getLogger(LoggerService.class);
   private final ObjectMapper objectMapper = new ObjectMapper();
