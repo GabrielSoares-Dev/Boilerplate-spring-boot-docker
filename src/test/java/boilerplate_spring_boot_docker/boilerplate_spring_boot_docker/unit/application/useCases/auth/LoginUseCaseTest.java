@@ -1,6 +1,7 @@
 package boilerplate_spring_boot_docker.boilerplate_spring_boot_docker.unit.application.useCases.auth;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
@@ -47,5 +48,25 @@ public class LoginUseCaseTest {
     verify(this.authService, times(1))
         .validateCredentials(this.defaultInput.email, this.defaultInput.password);
     verify(this.authService, times(1)).generateToken(this.defaultInput.email);
+  }
+
+  @Test
+  public void testInvalidCredentials()
+      throws BusinessException, IllegalArgumentException, UnsupportedEncodingException {
+    when(this.authService.validateCredentials(this.defaultInput.email, this.defaultInput.password))
+        .thenReturn(false);
+
+    BusinessException exception =
+        assertThrows(
+            BusinessException.class,
+            () -> {
+              useCase.run(this.defaultInput);
+            });
+
+    assertEquals("Invalid credentials", exception.getMessage());
+
+    verify(this.authService, times(1))
+        .validateCredentials(this.defaultInput.email, this.defaultInput.password);
+    verify(this.authService, times(0)).generateToken(this.defaultInput.email);
   }
 }

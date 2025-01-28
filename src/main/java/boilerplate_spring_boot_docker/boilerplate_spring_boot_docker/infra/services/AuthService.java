@@ -34,6 +34,10 @@ public class AuthService implements AuthServiceInterface {
         .sign(algorithm);
   }
 
+  public boolean validateToken(String token) {
+    return true;
+  }
+
   public boolean validateCredentials(String email, String password) {
     Optional<FindUserByEmailRepositoryOutputDto> searchUser =
         this.userRepository.findByEmail(email);
