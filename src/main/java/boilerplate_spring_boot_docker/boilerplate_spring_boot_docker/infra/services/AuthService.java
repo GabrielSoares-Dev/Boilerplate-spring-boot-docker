@@ -6,6 +6,7 @@ import boilerplate_spring_boot_docker.boilerplate_spring_boot_docker.application
 import boilerplate_spring_boot_docker.boilerplate_spring_boot_docker.application.services.EncryptionServiceInterface;
 import com.auth0.jwt.JWT;
 import com.auth0.jwt.algorithms.Algorithm;
+import com.auth0.jwt.exceptions.JWTVerificationException;
 import java.io.UnsupportedEncodingException;
 import java.util.Date;
 import java.util.Optional;
@@ -35,7 +36,13 @@ public class AuthService implements AuthServiceInterface {
   }
 
   public boolean validateToken(String token) {
-    return true;
+    try {
+      Algorithm algorithm = Algorithm.HMAC256(this.SECRET_KEY);
+      JWT.require(algorithm).build().verify(token);
+      return true;
+    } catch (JWTVerificationException | UnsupportedEncodingException exception) {
+      return false;
+    }
   }
 
   public boolean validateCredentials(String email, String password) {
@@ -49,9 +56,7 @@ public class AuthService implements AuthServiceInterface {
     }
 
     String encryptedPassword = searchUser.get().password;
-
     boolean matchesPassword = this.encryptionService.matches(password, encryptedPassword);
-
     boolean isValid = matchesPassword;
 
     return isValid;
