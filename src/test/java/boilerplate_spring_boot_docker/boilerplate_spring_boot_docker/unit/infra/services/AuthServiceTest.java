@@ -1,13 +1,16 @@
 package boilerplate_spring_boot_docker.boilerplate_spring_boot_docker.unit.infra.services;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.mockito.Mockito.when;
 
 import boilerplate_spring_boot_docker.boilerplate_spring_boot_docker.application.dtos.repositories.user.findByEmail.FindUserByEmailRepositoryOutputDto;
+import boilerplate_spring_boot_docker.boilerplate_spring_boot_docker.application.dtos.services.auth.getLoggedUserData.GetLoggedUserDataOutput;
 import boilerplate_spring_boot_docker.boilerplate_spring_boot_docker.application.repositories.UserRepositoryInterface;
 import boilerplate_spring_boot_docker.boilerplate_spring_boot_docker.application.services.EncryptionServiceInterface;
+import boilerplate_spring_boot_docker.boilerplate_spring_boot_docker.infra.models.User;
 import boilerplate_spring_boot_docker.boilerplate_spring_boot_docker.infra.services.AuthService;
 import com.auth0.jwt.JWT;
 import com.auth0.jwt.algorithms.Algorithm;
@@ -20,11 +23,18 @@ import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContext;
+import org.springframework.security.core.context.SecurityContextHolder;
 
 public class AuthServiceTest {
   @Mock private EncryptionServiceInterface encryptionService;
 
   @Mock private UserRepositoryInterface userRepository;
+
+  @Mock private SecurityContext securityContext;
+
+  @Mock private Authentication authentication;
 
   @InjectMocks private AuthService authService;
 
@@ -44,6 +54,7 @@ public class AuthServiceTest {
     MockitoAnnotations.openMocks(this);
     setField(authService, "SECRET_KEY", secretKey);
     setField(authService, "EXPIRATION_TIME", expirationTime);
+    SecurityContextHolder.setContext(securityContext);
   }
 
   @Test
@@ -126,5 +137,16 @@ public class AuthServiceTest {
     boolean output = authService.validateCredentials(email, password);
 
     assertFalse(output);
+  }
+
+  @Test
+  public void testGetLoggedUserData() {
+    User userDetails = new User(1, "test", "test@example.com", "test");
+    when(securityContext.getAuthentication()).thenReturn(authentication);
+    when(authentication.getPrincipal()).thenReturn(userDetails);
+
+    GetLoggedUserDataOutput output = authService.getLoggedUserData();
+
+    assertEquals(1, output.id);
   }
 }
