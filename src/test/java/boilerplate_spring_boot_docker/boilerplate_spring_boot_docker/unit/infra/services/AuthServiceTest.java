@@ -13,6 +13,7 @@ import com.auth0.jwt.JWT;
 import com.auth0.jwt.algorithms.Algorithm;
 import java.io.UnsupportedEncodingException;
 import java.lang.reflect.Field;
+import java.util.Date;
 import java.util.Optional;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -54,6 +55,30 @@ public class AuthServiceTest {
 
     Algorithm algorithm = Algorithm.HMAC256(secretKey);
     JWT.require(algorithm).build().verify(output);
+  }
+
+  @Test
+  public void testValidateTokenSuccess() throws UnsupportedEncodingException {
+    String email = "test@example.com";
+    Algorithm algorithm = Algorithm.HMAC256(secretKey);
+    String token =
+        JWT.create()
+            .withSubject(email)
+            .withExpiresAt(new Date(System.currentTimeMillis() + expirationTime))
+            .sign(algorithm);
+
+    boolean output = authService.validateToken(token);
+
+    assertTrue(output);
+  }
+
+  @Test
+  public void testValidateTokenFailure() {
+    String invalidToken = "invalid-token";
+
+    boolean output = authService.validateToken(invalidToken);
+
+    assertFalse(output);
   }
 
   @Test
