@@ -42,6 +42,15 @@ public class User implements UserDetails {
   @Column(name = "deleted_at")
   private LocalDateTime deletedAt;
 
+  public User() {}
+
+  public User(Integer id, String name, String email, String password) {
+    this.id = id;
+    this.name = name;
+    this.email = email;
+    this.password = password;
+  }
+
   public Integer getId() {
     return this.id;
   }

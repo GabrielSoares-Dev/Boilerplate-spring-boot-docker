@@ -7,6 +7,7 @@ import boilerplate_spring_boot_docker.boilerplate_spring_boot_docker.application
 import boilerplate_spring_boot_docker.boilerplate_spring_boot_docker.application.services.LoggerServiceInterface;
 import boilerplate_spring_boot_docker.boilerplate_spring_boot_docker.application.useCases.auth.CheckAuthenticationUseCase;
 import boilerplate_spring_boot_docker.boilerplate_spring_boot_docker.infra.helpers.BaseResponse;
+import boilerplate_spring_boot_docker.boilerplate_spring_boot_docker.infra.models.User;
 import com.auth0.jwt.JWT;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import jakarta.servlet.FilterChain;
@@ -14,7 +15,6 @@ import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import java.io.IOException;
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Map;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -22,8 +22,6 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.security.core.userdetails.User;
-import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.web.authentication.WebAuthenticationDetailsSource;
 import org.springframework.stereotype.Component;
 import org.springframework.web.filter.OncePerRequestFilter;
@@ -64,7 +62,7 @@ public class AuthorizationFilter extends OncePerRequestFilter {
     String email = JWT.decode(token).getSubject();
     FindUserByEmailRepositoryOutputDto userData = this.userRepository.findByEmail(email).get();
 
-    UserDetails userDetails = new User(userData.email, userData.password, new ArrayList<>());
+    User userDetails = new User(userData.id, userData.name, userData.email, userData.password);
 
     UsernamePasswordAuthenticationToken authentication =
         new UsernamePasswordAuthenticationToken(userDetails, null, userDetails.getAuthorities());

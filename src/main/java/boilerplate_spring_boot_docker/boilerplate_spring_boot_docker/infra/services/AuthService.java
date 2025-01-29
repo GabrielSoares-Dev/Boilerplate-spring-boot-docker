@@ -1,9 +1,11 @@
 package boilerplate_spring_boot_docker.boilerplate_spring_boot_docker.infra.services;
 
 import boilerplate_spring_boot_docker.boilerplate_spring_boot_docker.application.dtos.repositories.user.findByEmail.FindUserByEmailRepositoryOutputDto;
+import boilerplate_spring_boot_docker.boilerplate_spring_boot_docker.application.dtos.services.auth.getLoggedUserData.GetLoggedUserDataOutput;
 import boilerplate_spring_boot_docker.boilerplate_spring_boot_docker.application.repositories.UserRepositoryInterface;
 import boilerplate_spring_boot_docker.boilerplate_spring_boot_docker.application.services.AuthServiceInterface;
 import boilerplate_spring_boot_docker.boilerplate_spring_boot_docker.application.services.EncryptionServiceInterface;
+import boilerplate_spring_boot_docker.boilerplate_spring_boot_docker.infra.models.User;
 import com.auth0.jwt.JWT;
 import com.auth0.jwt.algorithms.Algorithm;
 import com.auth0.jwt.exceptions.JWTVerificationException;
@@ -12,6 +14,7 @@ import java.util.Date;
 import java.util.Optional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 
 @Service
@@ -60,5 +63,10 @@ public class AuthService implements AuthServiceInterface {
     boolean isValid = matchesPassword;
 
     return isValid;
+  }
+
+  public GetLoggedUserDataOutput getLoggedUserData() {
+    User userData = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+    return new GetLoggedUserDataOutput(userData.getId());
   }
 }
