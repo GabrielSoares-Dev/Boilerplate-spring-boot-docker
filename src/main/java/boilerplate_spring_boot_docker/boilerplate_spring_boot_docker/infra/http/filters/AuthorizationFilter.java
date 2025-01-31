@@ -2,7 +2,6 @@ package boilerplate_spring_boot_docker.boilerplate_spring_boot_docker.infra.http
 
 import boilerplate_spring_boot_docker.boilerplate_spring_boot_docker.application.dtos.repositories.user.findByEmail.FindUserByEmailRepositoryOutputDto;
 import boilerplate_spring_boot_docker.boilerplate_spring_boot_docker.application.dtos.useCases.auth.checkAuthentication.CheckAuthenticationUseCaseInputDto;
-import boilerplate_spring_boot_docker.boilerplate_spring_boot_docker.application.exceptions.BusinessException;
 import boilerplate_spring_boot_docker.boilerplate_spring_boot_docker.application.repositories.UserRepositoryInterface;
 import boilerplate_spring_boot_docker.boilerplate_spring_boot_docker.application.services.LoggerServiceInterface;
 import boilerplate_spring_boot_docker.boilerplate_spring_boot_docker.application.useCases.auth.CheckAuthenticationUseCase;
@@ -40,9 +39,13 @@ public class AuthorizationFilter extends OncePerRequestFilter {
     return Arrays.stream(this.WHITELIST).anyMatch(requestURI::startsWith);
   }
 
-  private String extractTokenFromHeader(HttpServletRequest request) {
-    String authorizationHeader = request.getHeader("Authorization");
+  private String extractTokenFromHeader(String authorizationHeader) throws Exception {
+    boolean noHaveAuthorizationHeader = authorizationHeader == null;
 
+    if (noHaveAuthorizationHeader) {
+      throw new Exception("No has token");
+    }
+    ;
     String authorizationWithoutBearer = authorizationHeader.replace("Bearer ", "");
     return authorizationWithoutBearer;
   }
@@ -81,14 +84,16 @@ public class AuthorizationFilter extends OncePerRequestFilter {
       return;
     }
 
-    String token = this.extractTokenFromHeader(request);
-
     try {
+      String authorizationHeader = request.getHeader("Authorization");
+
+      String token = this.extractTokenFromHeader(authorizationHeader);
+
       this.checkAuthenticationUseCase.run(new CheckAuthenticationUseCaseInputDto(token));
 
       this.setAuthenticationContext(token, request);
 
-    } catch (BusinessException exception) {
+    } catch (Exception exception) {
       String errorMessage = exception.getMessage();
       this.loggerService.error("error with authentication: ", errorMessage);
       this.sendUnauthorizedResponse(response);

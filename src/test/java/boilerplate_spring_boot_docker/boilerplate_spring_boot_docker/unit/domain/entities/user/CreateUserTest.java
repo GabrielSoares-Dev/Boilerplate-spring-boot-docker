@@ -14,8 +14,8 @@ public class CreateUserTest {
   public void testValidToCreate() {
     assertDoesNotThrow(
         () -> {
-          User user = new User("John Doe", "john.doe@example.com", "12345678901", "Password@123");
-          user.create();
+          User entity = new User("John Doe", "john.doe@example.com", "12345678901", "Password@123");
+          entity.create();
         });
   }
 
@@ -25,8 +25,8 @@ public class CreateUserTest {
         assertThrows(
             BusinessException.class,
             () -> {
-              User user = new User("", "john.doe@example.com", "12345678901", "Password@123");
-              user.create();
+              User entity = new User("", "john.doe@example.com", "12345678901", "Password@123");
+              entity.create();
             });
     assertEquals("Invalid name", exception.getMessage());
   }
@@ -37,8 +37,8 @@ public class CreateUserTest {
         assertThrows(
             BusinessException.class,
             () -> {
-              User user = new User("John Doe", "invalid-email", "12345678901", "Password@123");
-              user.create();
+              User entity = new User("John Doe", "invalid-email", "12345678901", "Password@123");
+              entity.create();
             });
     assertEquals("Invalid email", exception.getMessage());
   }
@@ -49,8 +49,8 @@ public class CreateUserTest {
         assertThrows(
             BusinessException.class,
             () -> {
-              User user = new User("John Doe", "john.doe@example.com", "12345", "Password@123");
-              user.create();
+              User entity = new User("John Doe", "john.doe@example.com", "12345", "Password@123");
+              entity.create();
             });
     assertEquals("Invalid phone number", exception.getMessage());
   }
@@ -61,8 +61,8 @@ public class CreateUserTest {
         assertThrows(
             BusinessException.class,
             () -> {
-              User user = new User("John Doe", "john.doe@example.com", "12345678901", "password");
-              user.create();
+              User entity = new User("John Doe", "john.doe@example.com", "12345678901", "password");
+              entity.create();
             });
     assertEquals("Invalid password", exception.getMessage());
   }

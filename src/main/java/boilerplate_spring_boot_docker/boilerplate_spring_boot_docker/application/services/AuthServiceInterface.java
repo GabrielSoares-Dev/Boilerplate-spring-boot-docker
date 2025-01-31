@@ -8,6 +8,8 @@ public interface AuthServiceInterface {
 
   boolean validateToken(String token);
 
+  void invalidateToken();
+
   boolean validateCredentials(String email, String password);
 
   GetLoggedUserDataOutput getLoggedUserData();

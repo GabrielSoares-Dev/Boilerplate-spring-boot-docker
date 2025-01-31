@@ -16,7 +16,7 @@ public class CreateUserUseCase {
 
   @Autowired private EncryptionServiceInterface encryptionService;
 
-  @Autowired private UserRepositoryInterface userRepository;
+  @Autowired private UserRepositoryInterface repository;
 
   private String logContext = "CreateUserUseCase";
 
@@ -26,7 +26,7 @@ public class CreateUserUseCase {
   }
 
   private boolean foundUserBySameEmail(String email) {
-    return this.userRepository.findByEmail(email).isPresent();
+    return this.repository.findByEmail(email).isPresent();
   }
 
   private String encryptPassword(String password) {
@@ -36,7 +36,7 @@ public class CreateUserUseCase {
   private void saveIntoDatabase(CreateUserUseCaseInputDto input) {
     String password = this.encryptPassword(input.password);
 
-    this.userRepository.create(
+    this.repository.create(
         new CreateUserRepositoryInputDto(input.name, input.email, input.phoneNumber, password));
   }
 

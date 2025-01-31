@@ -28,7 +28,7 @@ public class CreateUserUseCaseTest {
 
   @Mock private EncryptionServiceInterface encryptionService;
 
-  @Mock private UserRepositoryInterface userRepository;
+  @Mock private UserRepositoryInterface repository;
 
   @InjectMocks private CreateUserUseCase useCase;
 
@@ -43,7 +43,7 @@ public class CreateUserUseCaseTest {
 
   @Test
   public void testCreate() throws BusinessException {
-    when(this.userRepository.findByEmail(this.defaultInput.email)).thenReturn(Optional.empty());
+    when(this.repository.findByEmail(this.defaultInput.email)).thenReturn(Optional.empty());
     when(this.encryptionService.encrypt(this.defaultInput.password)).thenReturn("encrypt-test");
 
     assertDoesNotThrow(
@@ -51,12 +51,12 @@ public class CreateUserUseCaseTest {
           this.useCase.run(this.defaultInput);
         });
 
-    verify(this.userRepository, times(1)).findByEmail(this.defaultInput.email);
+    verify(this.repository, times(1)).findByEmail(this.defaultInput.email);
     verify(this.encryptionService, times(1)).encrypt(this.defaultInput.password);
 
     ArgumentCaptor<CreateUserRepositoryInputDto> captor =
         ArgumentCaptor.forClass(CreateUserRepositoryInputDto.class);
-    verify(this.userRepository, times(1)).create(captor.capture());
+    verify(this.repository, times(1)).create(captor.capture());
 
     CreateUserRepositoryInputDto capturedArgument = captor.getValue();
     assertEquals(this.defaultInput.name, capturedArgument.name);
@@ -72,7 +72,7 @@ public class CreateUserUseCaseTest {
         new FindUserByEmailRepositoryOutputDto(
             1, "John Doe", "john.doe@example.com", "password-test");
 
-    when(this.userRepository.findByEmail(this.defaultInput.email))
+    when(this.repository.findByEmail(this.defaultInput.email))
         .thenReturn(Optional.of(findByEmailOutputMock));
 
     BusinessException exception =
@@ -84,10 +84,10 @@ public class CreateUserUseCaseTest {
 
     assertEquals("User already exists", exception.getMessage());
 
-    verify(this.userRepository, times(1)).findByEmail(this.defaultInput.email);
+    verify(this.repository, times(1)).findByEmail(this.defaultInput.email);
 
     ArgumentCaptor<CreateUserRepositoryInputDto> captor =
         ArgumentCaptor.forClass(CreateUserRepositoryInputDto.class);
-    verify(this.userRepository, times(0)).create(captor.capture());
+    verify(this.repository, times(0)).create(captor.capture());
   }
 }
