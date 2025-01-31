@@ -83,6 +83,6 @@ public class CreateUserIntegrationTest {
         this.request.perform(
             post(this.path).contentType(MediaType.APPLICATION_JSON).content(inputJson));
 
-    output.andExpect(status().isBadRequest());
+    output.andExpect(status().isUnprocessableEntity());
   }
 }

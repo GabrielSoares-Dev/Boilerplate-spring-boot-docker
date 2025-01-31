@@ -38,6 +38,8 @@ public class AuthService implements AuthServiceInterface {
         .sign(algorithm);
   }
 
+  public void invalidateToken() {}
+
   public boolean validateToken(String token) {
     try {
       Algorithm algorithm = Algorithm.HMAC256(this.SECRET_KEY);
