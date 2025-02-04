@@ -5,6 +5,7 @@ import boilerplate_spring_boot_docker.boilerplate_spring_boot_docker.application
 import boilerplate_spring_boot_docker.boilerplate_spring_boot_docker.application.dtos.useCases.role.findAll.FindAllRolesUseCaseOutputDto;
 import boilerplate_spring_boot_docker.boilerplate_spring_boot_docker.application.dtos.useCases.role.findById.FindRoleByIdUseCaseInputDto;
 import boilerplate_spring_boot_docker.boilerplate_spring_boot_docker.application.dtos.useCases.role.findById.FindRoleByIdUseCaseOutputDto;
+import boilerplate_spring_boot_docker.boilerplate_spring_boot_docker.application.dtos.useCases.role.syncRoleWithPermissions.SyncRoleWithPermissionsUseCaseInputDto;
 import boilerplate_spring_boot_docker.boilerplate_spring_boot_docker.application.dtos.useCases.role.update.UpdateRoleUseCaseInputDto;
 import boilerplate_spring_boot_docker.boilerplate_spring_boot_docker.application.exceptions.BusinessException;
 import boilerplate_spring_boot_docker.boilerplate_spring_boot_docker.application.services.LoggerServiceInterface;
@@ -12,9 +13,11 @@ import boilerplate_spring_boot_docker.boilerplate_spring_boot_docker.application
 import boilerplate_spring_boot_docker.boilerplate_spring_boot_docker.application.useCases.role.DeleteRoleUseCase;
 import boilerplate_spring_boot_docker.boilerplate_spring_boot_docker.application.useCases.role.FindAllRolesUseCase;
 import boilerplate_spring_boot_docker.boilerplate_spring_boot_docker.application.useCases.role.FindRoleByIdUseCase;
+import boilerplate_spring_boot_docker.boilerplate_spring_boot_docker.application.useCases.role.SyncRoleWithPermissionsUseCase;
 import boilerplate_spring_boot_docker.boilerplate_spring_boot_docker.application.useCases.role.UpdateRoleUseCase;
 import boilerplate_spring_boot_docker.boilerplate_spring_boot_docker.infra.helpers.BaseResponse;
 import boilerplate_spring_boot_docker.boilerplate_spring_boot_docker.infra.http.validators.role.CreateRoleValidator;
+import boilerplate_spring_boot_docker.boilerplate_spring_boot_docker.infra.http.validators.role.SyncRoleWithPermissionsValidator;
 import boilerplate_spring_boot_docker.boilerplate_spring_boot_docker.infra.http.validators.role.UpdateRoleValidator;
 import jakarta.validation.Valid;
 import java.util.List;
@@ -45,6 +48,8 @@ public class RoleController {
   @Autowired private UpdateRoleUseCase updateRoleUseCase;
 
   @Autowired private DeleteRoleUseCase deleteRoleUseCase;
+
+  @Autowired private SyncRoleWithPermissionsUseCase syncRoleWithPermissionsUseCase;
 
   private String logContext = "RoleController";
 
@@ -134,6 +139,30 @@ public class RoleController {
       boolean isInvalidIdError = "Invalid id" == errorMessage;
 
       if (isInvalidIdError) {
+        httpStatus = HttpStatus.BAD_REQUEST;
+      }
+      this.loggerService.error("Error: ", errorMessage);
+      return BaseResponse.error(errorMessage, httpStatus);
+    }
+  }
+
+  @PostMapping("/sync-permissions")
+  public ResponseEntity<Map<String, Object>> syncPermissions(
+      @Valid @RequestBody SyncRoleWithPermissionsValidator input) {
+    this.loggerService.debug(
+        String.format("Start %s syncPermissions with input: ", this.logContext), input);
+    try {
+      this.syncRoleWithPermissionsUseCase.run(
+          new SyncRoleWithPermissionsUseCaseInputDto(input.role, input.permissions));
+      return BaseResponse.success("Role sync successfully", HttpStatus.OK);
+    } catch (BusinessException exception) {
+      String errorMessage = exception.getMessage();
+      HttpStatus httpStatus = HttpStatus.INTERNAL_SERVER_ERROR;
+
+      boolean isInvalidPermissionError = errorMessage == "Invalid permission";
+      boolean isInvalidRoleError = errorMessage == "Invalid role";
+
+      if (isInvalidPermissionError || isInvalidRoleError) {
         httpStatus = HttpStatus.BAD_REQUEST;
       }
       this.loggerService.error("Error: ", errorMessage);

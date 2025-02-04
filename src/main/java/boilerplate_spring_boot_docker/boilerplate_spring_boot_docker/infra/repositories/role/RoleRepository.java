@@ -4,11 +4,17 @@ import boilerplate_spring_boot_docker.boilerplate_spring_boot_docker.application
 import boilerplate_spring_boot_docker.boilerplate_spring_boot_docker.application.dtos.repositories.role.findAll.FindAllRolesRepositoryOutputDto;
 import boilerplate_spring_boot_docker.boilerplate_spring_boot_docker.application.dtos.repositories.role.findById.FindRoleByIdRepositoryOutputDto;
 import boilerplate_spring_boot_docker.boilerplate_spring_boot_docker.application.dtos.repositories.role.findByName.FindRoleByNameRepositoryOutputDto;
+import boilerplate_spring_boot_docker.boilerplate_spring_boot_docker.application.dtos.repositories.role.syncPermissions.SyncPermissionsRepositoryInputDto;
 import boilerplate_spring_boot_docker.boilerplate_spring_boot_docker.application.dtos.repositories.role.update.UpdateRoleRepositoryInputDto;
 import boilerplate_spring_boot_docker.boilerplate_spring_boot_docker.application.repositories.RoleRepositoryInterface;
+import boilerplate_spring_boot_docker.boilerplate_spring_boot_docker.infra.models.Permission;
 import boilerplate_spring_boot_docker.boilerplate_spring_boot_docker.infra.models.Role;
+import boilerplate_spring_boot_docker.boilerplate_spring_boot_docker.infra.repositories.permission.PermissionJpaRepository;
+import jakarta.transaction.Transactional;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Optional;
+import java.util.Set;
 import java.util.stream.Collectors;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
@@ -16,6 +22,8 @@ import org.springframework.stereotype.Repository;
 @Repository
 public class RoleRepository implements RoleRepositoryInterface {
   @Autowired private RoleJpaRepository roleJpaRepository;
+
+  @Autowired private PermissionJpaRepository permissionJpaRepository;
 
   @Override
   public void create(CreateRoleRepositoryInputDto input) {
@@ -68,5 +76,17 @@ public class RoleRepository implements RoleRepositoryInterface {
   @Override
   public void delete(Integer id) {
     roleJpaRepository.deleteById(id);
+  }
+
+  @Transactional
+  @Override
+  public void syncPermissions(SyncPermissionsRepositoryInputDto input) {
+    Optional<Role> role = this.roleJpaRepository.findByName(input.role);
+
+    Set<Permission> permissions =
+        new HashSet<>(this.permissionJpaRepository.findByNameIn(input.permissions));
+
+    role.get().setPermissions(permissions);
+    this.roleJpaRepository.save(role.get());
   }
 }

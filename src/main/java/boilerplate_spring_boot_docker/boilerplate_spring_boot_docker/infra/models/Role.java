@@ -5,9 +5,13 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.JoinTable;
+import jakarta.persistence.ManyToMany;
 import jakarta.persistence.PreUpdate;
 import jakarta.persistence.Table;
 import java.time.LocalDateTime;
+import java.util.Set;
 
 @Entity
 @Table(name = "roles")
@@ -27,6 +31,13 @@ public class Role {
 
   @Column(name = "updated_at")
   private LocalDateTime updatedAt;
+
+  @ManyToMany
+  @JoinTable(
+      name = "role_has_permissions",
+      joinColumns = @JoinColumn(name = "role_id"),
+      inverseJoinColumns = @JoinColumn(name = "permission_id"))
+  private Set<Permission> permissions;
 
   @PreUpdate
   protected void onUpdate() {
@@ -59,5 +70,9 @@ public class Role {
 
   public LocalDateTime getCreatedAt() {
     return createdAt;
+  }
+
+  public void setPermissions(Set<Permission> permissions) {
+    this.permissions = permissions;
   }
 }
