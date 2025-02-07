@@ -1,1 +1,1 @@
-DELETE FROM permissions;
+DELETE FROM permissions WHERE id = 300;

@@ -15,6 +15,7 @@ import boilerplate_spring_boot_docker.boilerplate_spring_boot_docker.application
 import boilerplate_spring_boot_docker.boilerplate_spring_boot_docker.application.services.EncryptionServiceInterface;
 import boilerplate_spring_boot_docker.boilerplate_spring_boot_docker.application.services.LoggerServiceInterface;
 import boilerplate_spring_boot_docker.boilerplate_spring_boot_docker.application.useCases.user.CreateUserUseCase;
+import boilerplate_spring_boot_docker.boilerplate_spring_boot_docker.domain.enums.RoleEnum;
 import java.util.Optional;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -24,17 +25,20 @@ import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 
 public class CreateUserUseCaseTest {
-  @Mock private LoggerServiceInterface loggerServiceInterface;
+  @Mock
+  private LoggerServiceInterface loggerServiceInterface;
 
-  @Mock private EncryptionServiceInterface encryptionService;
+  @Mock
+  private EncryptionServiceInterface encryptionService;
 
-  @Mock private UserRepositoryInterface repository;
+  @Mock
+  private UserRepositoryInterface repository;
 
-  @InjectMocks private CreateUserUseCase useCase;
+  @InjectMocks
+  private CreateUserUseCase useCase;
 
-  private final CreateUserUseCaseInputDto defaultInput =
-      new CreateUserUseCaseInputDto(
-          "John Doe", "john.doe@example.com", "12345678901", "Password@123");
+  private final CreateUserUseCaseInputDto defaultInput = new CreateUserUseCaseInputDto(
+      "John Doe", "john.doe@example.com", "12345678901", "Password@123");
 
   @BeforeEach
   public void setUp() {
@@ -54,8 +58,7 @@ public class CreateUserUseCaseTest {
     verify(this.repository, times(1)).findByEmail(this.defaultInput.email);
     verify(this.encryptionService, times(1)).encrypt(this.defaultInput.password);
 
-    ArgumentCaptor<CreateUserRepositoryInputDto> captor =
-        ArgumentCaptor.forClass(CreateUserRepositoryInputDto.class);
+    ArgumentCaptor<CreateUserRepositoryInputDto> captor = ArgumentCaptor.forClass(CreateUserRepositoryInputDto.class);
     verify(this.repository, times(1)).create(captor.capture());
 
     CreateUserRepositoryInputDto capturedArgument = captor.getValue();
@@ -63,31 +66,29 @@ public class CreateUserUseCaseTest {
     assertEquals(this.defaultInput.email, capturedArgument.email);
     assertEquals(this.defaultInput.phoneNumber, capturedArgument.phoneNumber);
     assertEquals("encrypt-test", capturedArgument.password);
+    assertEquals(RoleEnum.ADMIN, capturedArgument.role);
   }
 
   @Test
   public void testNotCreateIfFoundUserBySameEmail() throws BusinessException {
-
-    FindUserByEmailRepositoryOutputDto findByEmailOutputMock =
-        new FindUserByEmailRepositoryOutputDto(
-            1, "John Doe", "john.doe@example.com", "password-test");
+    String[] permissions = { "test-permission" };
+    FindUserByEmailRepositoryOutputDto findByEmailOutputMock = new FindUserByEmailRepositoryOutputDto(
+        1, "John Doe", "john.doe@example.com", "password-test", permissions, 1);
 
     when(this.repository.findByEmail(this.defaultInput.email))
         .thenReturn(Optional.of(findByEmailOutputMock));
 
-    BusinessException exception =
-        assertThrows(
-            BusinessException.class,
-            () -> {
-              this.useCase.run(this.defaultInput);
-            });
+    BusinessException exception = assertThrows(
+        BusinessException.class,
+        () -> {
+          this.useCase.run(this.defaultInput);
+        });
 
     assertEquals("User already exists", exception.getMessage());
 
     verify(this.repository, times(1)).findByEmail(this.defaultInput.email);
 
-    ArgumentCaptor<CreateUserRepositoryInputDto> captor =
-        ArgumentCaptor.forClass(CreateUserRepositoryInputDto.class);
+    ArgumentCaptor<CreateUserRepositoryInputDto> captor = ArgumentCaptor.forClass(CreateUserRepositoryInputDto.class);
     verify(this.repository, times(0)).create(captor.capture());
   }
 }

@@ -3,11 +3,13 @@ package boilerplate_spring_boot_docker.boilerplate_spring_boot_docker.integratio
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
-
-import boilerplate_spring_boot_docker.boilerplate_spring_boot_docker.integration.helpers.BaseAuthenticatedTest;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import boilerplate_spring_boot_docker.boilerplate_spring_boot_docker.helpers.BaseAuthenticatedTest;
+import boilerplate_spring_boot_docker.boilerplate_spring_boot_docker.helpers.UserEmail;
+import java.io.UnsupportedEncodingException;
 import java.util.HashMap;
 import java.util.Map;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.http.MediaType;
 import org.springframework.test.context.jdbc.Sql;
@@ -17,8 +19,13 @@ import org.springframework.test.web.servlet.ResultActions;
 public class CreateRoleIntegrationTest extends BaseAuthenticatedTest {
   private String path = "/v1/role";
 
+  @BeforeEach
+  public void setupEach() throws IllegalArgumentException, UnsupportedEncodingException {
+    this.userEmail = UserEmail.ADMIN();
+    this.generateAuthorizationToken();
+  }
+
   @Test
-  @Sql(value = "classpath:reset-roles.sql", executionPhase = ExecutionPhase.AFTER_TEST_METHOD)
   public void testCreated() throws Exception {
     Map<String, String> input = new HashMap<>();
     input.put("name", "test-name");
@@ -26,12 +33,11 @@ public class CreateRoleIntegrationTest extends BaseAuthenticatedTest {
 
     String inputJson = new ObjectMapper().writeValueAsString(input);
 
-    ResultActions output =
-        this.request.perform(
-            post(this.path)
-                .contentType(MediaType.APPLICATION_JSON)
-                .content(inputJson)
-                .header("Authorization", this.tokenFormatted));
+    ResultActions output = this.request.perform(
+        post(this.path)
+            .contentType(MediaType.APPLICATION_JSON)
+            .content(inputJson)
+            .header("Authorization", this.tokenFormatted));
 
     output.andExpect(status().isCreated());
     output.andExpect(jsonPath("$.message").value("Role created successfully"));
@@ -42,17 +48,16 @@ public class CreateRoleIntegrationTest extends BaseAuthenticatedTest {
   @Sql(value = "classpath:reset-roles.sql", executionPhase = ExecutionPhase.AFTER_TEST_METHOD)
   public void testAlreadyExists() throws Exception {
     Map<String, String> input = new HashMap<>();
-    input.put("name", "test-name");
+    input.put("name", "test-role");
     input.put("description", "test-description");
 
     String inputJson = new ObjectMapper().writeValueAsString(input);
 
-    ResultActions output =
-        this.request.perform(
-            post(this.path)
-                .contentType(MediaType.APPLICATION_JSON)
-                .content(inputJson)
-                .header("Authorization", this.tokenFormatted));
+    ResultActions output = this.request.perform(
+        post(this.path)
+            .contentType(MediaType.APPLICATION_JSON)
+            .content(inputJson)
+            .header("Authorization", this.tokenFormatted));
 
     output.andExpect(status().isBadRequest());
     output.andExpect(jsonPath("$.message").value("Role already exists"));
@@ -66,12 +71,11 @@ public class CreateRoleIntegrationTest extends BaseAuthenticatedTest {
 
     String inputJson = new ObjectMapper().writeValueAsString(input);
 
-    ResultActions output =
-        this.request.perform(
-            post(this.path)
-                .contentType(MediaType.APPLICATION_JSON)
-                .content(inputJson)
-                .header("Authorization", this.tokenFormatted));
+    ResultActions output = this.request.perform(
+        post(this.path)
+            .contentType(MediaType.APPLICATION_JSON)
+            .content(inputJson)
+            .header("Authorization", this.tokenFormatted));
 
     output.andExpect(status().isUnprocessableEntity());
   }
