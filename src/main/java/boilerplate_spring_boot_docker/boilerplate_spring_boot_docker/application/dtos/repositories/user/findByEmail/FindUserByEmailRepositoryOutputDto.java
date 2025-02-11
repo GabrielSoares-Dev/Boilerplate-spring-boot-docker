@@ -9,7 +9,12 @@ public class FindUserByEmailRepositoryOutputDto {
   public Integer roleId;
 
   public FindUserByEmailRepositoryOutputDto(
-      Integer id, String name, String email, String password, String[] permissions, Integer roleId) {
+      Integer id,
+      String name,
+      String email,
+      String password,
+      String[] permissions,
+      Integer roleId) {
     this.id = id;
     this.name = name;
     this.email = email;

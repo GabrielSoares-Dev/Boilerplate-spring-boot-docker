@@ -1,1 +1,1 @@
-DELETE FROM roles WHERE id = 300;
+DELETE FROM roles;

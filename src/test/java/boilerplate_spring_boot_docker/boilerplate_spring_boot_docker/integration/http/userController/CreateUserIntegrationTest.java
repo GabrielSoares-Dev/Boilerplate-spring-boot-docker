@@ -3,10 +3,8 @@ package boilerplate_spring_boot_docker.boilerplate_spring_boot_docker.integratio
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
+
 import com.fasterxml.jackson.databind.ObjectMapper;
-import boilerplate_spring_boot_docker.boilerplate_spring_boot_docker.domain.enums.RoleEnum;
-import boilerplate_spring_boot_docker.boilerplate_spring_boot_docker.infra.models.Role;
-import boilerplate_spring_boot_docker.boilerplate_spring_boot_docker.infra.repositories.role.RoleJpaRepository;
 import java.util.HashMap;
 import java.util.Map;
 import org.junit.jupiter.api.BeforeEach;
@@ -24,32 +22,17 @@ import org.springframework.test.web.servlet.ResultActions;
 @SpringBootTest
 @ActiveProfiles("test")
 @AutoConfigureMockMvc
+@Sql(value = "classpath:insert-admin-role.sql", executionPhase = ExecutionPhase.BEFORE_TEST_CLASS)
+@Sql(value = "classpath:reset-users.sql", executionPhase = ExecutionPhase.AFTER_TEST_CLASS)
 public class CreateUserIntegrationTest {
-  @Autowired
-  private RoleJpaRepository roleRepository;
-
-  @Autowired
-  private MockMvc request;
+  @Autowired private MockMvc request;
 
   private ObjectMapper objectMapper;
 
   private String path = "/v1/user";
 
-  private void resetRoles() {
-    this.roleRepository.deleteAll();
-  }
-
-  private void createAdminRole() {
-    Role role = new Role();
-    role.setName(RoleEnum.ADMIN.toString());
-    role.setDescription("test-role");
-    this.roleRepository.save(role);
-  }
-
   @BeforeEach
   public void setUp() {
-    this.resetRoles();
-    this.createAdminRole();
     objectMapper = new ObjectMapper();
   }
 
@@ -62,8 +45,9 @@ public class CreateUserIntegrationTest {
     input.put("password", "Boilerplate@2023");
 
     String inputJson = objectMapper.writeValueAsString(input);
-    ResultActions output = this.request.perform(
-        post(this.path).contentType(MediaType.APPLICATION_JSON).content(inputJson));
+    ResultActions output =
+        this.request.perform(
+            post(this.path).contentType(MediaType.APPLICATION_JSON).content(inputJson));
 
     output.andExpect(status().isCreated());
     output.andExpect(jsonPath("$.message").value("User created successfully"));
@@ -79,8 +63,9 @@ public class CreateUserIntegrationTest {
     input.put("password", "Boilerplate@2023");
 
     String inputJson = objectMapper.writeValueAsString(input);
-    ResultActions output = this.request.perform(
-        post(this.path).contentType(MediaType.APPLICATION_JSON).content(inputJson));
+    ResultActions output =
+        this.request.perform(
+            post(this.path).contentType(MediaType.APPLICATION_JSON).content(inputJson));
 
     output.andExpect(status().isBadRequest());
     output.andExpect(jsonPath("$.message").value("User already exists"));
@@ -95,8 +80,9 @@ public class CreateUserIntegrationTest {
     input.put("password", null);
 
     String inputJson = objectMapper.writeValueAsString(input);
-    ResultActions output = this.request.perform(
-        post(this.path).contentType(MediaType.APPLICATION_JSON).content(inputJson));
+    ResultActions output =
+        this.request.perform(
+            post(this.path).contentType(MediaType.APPLICATION_JSON).content(inputJson));
 
     output.andExpect(status().isUnprocessableEntity());
   }

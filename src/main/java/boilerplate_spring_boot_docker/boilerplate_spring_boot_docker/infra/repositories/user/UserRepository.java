@@ -12,11 +12,9 @@ import org.springframework.stereotype.Repository;
 
 @Repository
 public class UserRepository implements UserRepositoryInterface {
-  @Autowired
-  private UserJpaRepository userJpaRepository;
+  @Autowired private UserJpaRepository userJpaRepository;
 
-  @Autowired
-  private RoleJpaRepository roleJpaRepository;
+  @Autowired private RoleJpaRepository roleJpaRepository;
 
   @Override
   public void create(CreateUserRepositoryInputDto input) {
@@ -42,13 +40,14 @@ public class UserRepository implements UserRepositoryInterface {
 
     User userData = result.get();
 
-    FindUserByEmailRepositoryOutputDto output = new FindUserByEmailRepositoryOutputDto(
-        userData.getId(),
-        userData.getName(),
-        userData.getEmail(),
-        userData.getPassword(),
-        userData.getPermissions(),
-        userData.getRole().getId());
+    FindUserByEmailRepositoryOutputDto output =
+        new FindUserByEmailRepositoryOutputDto(
+            userData.getId(),
+            userData.getName(),
+            userData.getEmail(),
+            userData.getPassword(),
+            userData.getPermissions(),
+            userData.getRole().getId());
 
     return Optional.of(output);
   }

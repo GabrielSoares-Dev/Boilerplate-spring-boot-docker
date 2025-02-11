@@ -4,6 +4,7 @@ import java.util.HashMap;
 import java.util.Map;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.AccessDeniedException;
 import org.springframework.validation.FieldError;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ControllerAdvice;
@@ -35,5 +36,15 @@ public class GlobalExceptionConfig {
     response.put("statusCode", HttpStatus.INTERNAL_SERVER_ERROR.value());
     response.put("message", ex.getMessage());
     return new ResponseEntity<>(response, HttpStatus.INTERNAL_SERVER_ERROR);
+  }
+
+  @ExceptionHandler(AccessDeniedException.class)
+  @ResponseStatus(HttpStatus.FORBIDDEN)
+  public ResponseEntity<Map<String, Object>> handleAccessDeniedException(AccessDeniedException ex) {
+    Map<String, Object> response = new HashMap<>();
+    response.put("statusCode", HttpStatus.FORBIDDEN.value());
+    response.put("message", "Access to this resource was denied");
+
+    return new ResponseEntity<>(response, HttpStatus.FORBIDDEN);
   }
 }

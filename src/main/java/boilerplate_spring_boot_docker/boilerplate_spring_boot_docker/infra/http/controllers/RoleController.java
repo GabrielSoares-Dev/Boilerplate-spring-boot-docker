@@ -25,6 +25,7 @@ import java.util.Map;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -54,6 +55,7 @@ public class RoleController {
   private String logContext = "RoleController";
 
   @PostMapping
+  @PreAuthorize("hasAuthority('CREATE_ROLE')")
   public ResponseEntity<Map<String, Object>> create(@Valid @RequestBody CreateRoleValidator input) {
     this.loggerService.debug(String.format("Start %s create with input: ", this.logContext), input);
     try {
@@ -72,7 +74,8 @@ public class RoleController {
     }
   }
 
-  @GetMapping()
+  @GetMapping
+  @PreAuthorize("hasAuthority('READ_ALL_ROLES')")
   public ResponseEntity<Map<String, Object>> findAll() throws BusinessException {
     this.loggerService.debug(String.format("Start %s findAll", this.logContext));
     List<FindAllRolesUseCaseOutputDto> output = this.findAllRolesUseCase.run();
@@ -82,6 +85,7 @@ public class RoleController {
   }
 
   @GetMapping("/{id}")
+  @PreAuthorize("hasAuthority('READ_ROLE')")
   public ResponseEntity<Map<String, Object>> findById(@PathVariable Integer id) {
     this.loggerService.debug(String.format("Start %s findById with input: ", this.logContext), id);
     try {
@@ -106,6 +110,7 @@ public class RoleController {
   }
 
   @PutMapping("/{id}")
+  @PreAuthorize("hasAuthority('UPDATE_ROLE')")
   public ResponseEntity<Map<String, Object>> update(
       @PathVariable Integer id, @Valid @RequestBody UpdateRoleValidator input) {
     this.loggerService.debug(String.format("Start %s update with input: ", this.logContext), input);
@@ -127,6 +132,7 @@ public class RoleController {
   }
 
   @DeleteMapping("/{id}")
+  @PreAuthorize("hasAuthority('DELETE_ROLE')")
   public ResponseEntity<Map<String, Object>> delete(@PathVariable Integer id) {
     this.loggerService.debug(String.format("Start %s delete with input: ", this.logContext), id);
     try {
@@ -147,6 +153,7 @@ public class RoleController {
   }
 
   @PostMapping("/sync-permissions")
+  @PreAuthorize("hasAuthority('SYNC_ROLE_WITH_PERMISSIONS')")
   public ResponseEntity<Map<String, Object>> syncPermissions(
       @Valid @RequestBody SyncRoleWithPermissionsValidator input) {
     this.loggerService.debug(

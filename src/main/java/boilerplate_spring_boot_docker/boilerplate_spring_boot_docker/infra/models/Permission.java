@@ -28,8 +28,7 @@ public class Permission {
   @Column(name = "updated_at")
   private LocalDateTime updatedAt;
 
-  public Permission() {
-  }
+  public Permission() {}
 
   public Permission(String name, String description) {
     this.name = name;

@@ -2,7 +2,6 @@ package boilerplate_spring_boot_docker.boilerplate_spring_boot_docker.infra.http
 
 import boilerplate_spring_boot_docker.boilerplate_spring_boot_docker.application.dtos.repositories.user.findByEmail.FindUserByEmailRepositoryOutputDto;
 import boilerplate_spring_boot_docker.boilerplate_spring_boot_docker.application.dtos.useCases.auth.checkAuthentication.CheckAuthenticationUseCaseInputDto;
-import boilerplate_spring_boot_docker.boilerplate_spring_boot_docker.application.repositories.RoleRepositoryInterface;
 import boilerplate_spring_boot_docker.boilerplate_spring_boot_docker.application.repositories.UserRepositoryInterface;
 import boilerplate_spring_boot_docker.boilerplate_spring_boot_docker.application.services.LoggerServiceInterface;
 import boilerplate_spring_boot_docker.boilerplate_spring_boot_docker.application.useCases.auth.CheckAuthenticationUseCase;
@@ -10,8 +9,6 @@ import boilerplate_spring_boot_docker.boilerplate_spring_boot_docker.infra.helpe
 import boilerplate_spring_boot_docker.boilerplate_spring_boot_docker.infra.models.Role;
 import boilerplate_spring_boot_docker.boilerplate_spring_boot_docker.infra.models.User;
 import boilerplate_spring_boot_docker.boilerplate_spring_boot_docker.infra.repositories.role.RoleJpaRepository;
-import boilerplate_spring_boot_docker.boilerplate_spring_boot_docker.infra.repositories.role.RoleRepository;
-
 import com.auth0.jwt.JWT;
 import com.auth0.jwt.interfaces.DecodedJWT;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -33,19 +30,15 @@ import org.springframework.web.filter.OncePerRequestFilter;
 
 @Component
 public class AuthorizationFilter extends OncePerRequestFilter {
-  @Autowired
-  private LoggerServiceInterface loggerService;
+  @Autowired private LoggerServiceInterface loggerService;
 
-  @Autowired
-  private CheckAuthenticationUseCase checkAuthenticationUseCase;
+  @Autowired private CheckAuthenticationUseCase checkAuthenticationUseCase;
 
-  @Autowired
-  private UserRepositoryInterface userRepository;
+  @Autowired private UserRepositoryInterface userRepository;
 
-  @Autowired
-  private RoleJpaRepository roleJpaRepository;
+  @Autowired private RoleJpaRepository roleJpaRepository;
 
-  private String[] WHITELIST = { "/v1/user", "/v1/auth/login" };
+  private String[] WHITELIST = {"/v1/user", "/v1/auth/login"};
 
   private boolean isWhitelisted(String requestURI) {
     return Arrays.stream(this.WHITELIST).anyMatch(requestURI::startsWith);
@@ -63,7 +56,8 @@ public class AuthorizationFilter extends OncePerRequestFilter {
   }
 
   private void sendUnauthorizedResponse(HttpServletResponse response) throws IOException {
-    ResponseEntity<Map<String, Object>> errorResponse = BaseResponse.error("Unauthorized", HttpStatus.UNAUTHORIZED);
+    ResponseEntity<Map<String, Object>> errorResponse =
+        BaseResponse.error("Unauthorized", HttpStatus.UNAUTHORIZED);
     response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
     response.setContentType("application/json");
     response.setCharacterEncoding("UTF-8");
@@ -86,8 +80,8 @@ public class AuthorizationFilter extends OncePerRequestFilter {
     userDetails.setPassword(userData.password);
     userDetails.setRole(role);
 
-    UsernamePasswordAuthenticationToken authentication = new UsernamePasswordAuthenticationToken(userDetails, null,
-        userDetails.getAuthorities());
+    UsernamePasswordAuthenticationToken authentication =
+        new UsernamePasswordAuthenticationToken(userDetails, null, userDetails.getAuthorities());
     authentication.setDetails(new WebAuthenticationDetailsSource().buildDetails(request));
 
     SecurityContextHolder.getContext().setAuthentication(authentication);

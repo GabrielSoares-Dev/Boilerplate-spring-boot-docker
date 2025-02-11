@@ -13,13 +13,14 @@ import jakarta.persistence.Table;
 import java.time.LocalDateTime;
 import java.util.Collection;
 import java.util.stream.Collectors;
-
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
 @Entity
-@Table(name = "users", indexes = { @Index(name = "index_users_deleted_at", columnList = "deleted_at") })
+@Table(
+    name = "users",
+    indexes = {@Index(name = "index_users_deleted_at", columnList = "deleted_at")})
 public class User implements UserDetails {
   @Id
   @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -50,8 +51,7 @@ public class User implements UserDetails {
   @Column(name = "deleted_at")
   private LocalDateTime deletedAt;
 
-  public User() {
-  }
+  public User() {}
 
   public User(Integer id, String name, String email, String password) {
     this.id = id;
