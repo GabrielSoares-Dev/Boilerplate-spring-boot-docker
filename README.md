@@ -1,51 +1,58 @@
-# Spring Boot Base Project
+# Spring Boot Boilerplate Docker Portainer
 
-Este é um projeto base para aplicações Spring Boot, configurado com PostgreSQL, Swagger para documentação da API e integração contínua com GitHub Actions.
+This repository is a boilerplate for Spring Boot applications, including permission services, authentication, linting, test coverage, and CI/CD pipelines for automated deployment.
 
-## Comandos
+## Technologies Used
 
-- `npm run build`: Executa o comando `mvn clean package -DskipTests` para compilar o projeto sem executar os testes.
-- `npm run install:java:dependencies`: Executa o comando `mvn install -DskipTests` para instalar as dependências Java sem executar os testes.
-- `npm run start:dev`: Executa o comando `mvn spring-boot:run` para iniciar a aplicação em modo de desenvolvimento.
-- `npm run db:migrate`: Executa o comando `mvn flyway:migrate` para aplicar as migrações do banco de dados.
-- `npm run lint:test`: Executa o comando `mvn spotless:check` para verificar o estilo do código.
-- `npm run lint:fix`: Executa o comando `mvn spotless:apply` para corrigir o estilo do código.
-- `npm run test`: Executa o comando `mvn test` para rodar os testes.
-- `npm run test:coverage`: Executa o comando `mvn test jacoco:report` para rodar os testes e gerar um relatório de cobertura.
+This project is built following the **Clean Architecture** principles with **Java 21**.
 
-## Documentação da API
+- **Spring Boot** - Backend development framework
+- **Flyway** - Database migration
+- **Spotless** - Linting tool to maintain code standards
+- **JaCoCo** - Test coverage
+- **Maven** - Dependency manager and build automation tool
 
-A documentação da API está disponível no Swagger ao rodar o projeto. Acesse [Swagger UI](http://localhost:8080/docs) para visualizar todos os endpoints disponíveis, métodos HTTP suportados, parâmetros necessários e exemplos de respostas.
+## API Documentation
 
-## Passo a Passo para Rodar o Projeto
+The API documentation is available on Postman:
 
-1. **Instale a extensão Dev Containers no VS Code**:
-   - Abra o VS Code e vá para a aba de extensões.
-   - Procure por "Dev Containers" e instale a extensão.
+[Postman Documentation]([#](https://documenter.getpostman.com/view/37022898/2sAYXBFzV5))
 
-2. **Rode o Docker Compose**:
-   - No terminal, execute o comando:
-     ```sh
-     docker-compose -f docker-compose-dev.yml up -d
-     ```
+## Available Commands
 
-3. **Entre no Container usando a Extensão Dev Containers**:
-   - No VS Code, abra o comando `Dev Containers: Attach to Running Container...` e selecione o container do projeto.
+```json
+{
+    "build": "mvn clean package -DskipTests",
+    "install:java:dependencies": "mvn install -DskipTests",
+    "start:dev": "mvn spring-boot:run",
+    "db:migrate": "mvn flyway:migrate",
+    "lint:test": "mvn spotless:check",
+    "lint:fix": "mvn spotless:apply",
+    "test": "mvn test",
+    "test:coverage": "mvn test jacoco:report"
+}
+```
 
-4. **Crie o Banco de Dados do Projeto**:
-   - Entre na sua IDE de banco de dados e crie o banco do projeto
+### Command Explanation
 
-5. **Rode o Comando de Migração**:
-   - Ainda no terminal dentro do container, execute o comando de migração:
-     ```sh
-     npm run db:migrate
-     ```
+- **`npm run build`**: Compiles and packages the project without running tests.
+- **`npm run install:java:dependencies`**: Installs Java dependencies without running tests.
+- **`npm run start:dev`**: Starts the server in development mode.
+- **`npm run db:migrate`**: Applies database migrations.
+- **`npm run lint:test`**: Checks code formatting standards.
+- **`npm run lint:fix`**: Automatically fixes code formatting issues.
+- **`npm run test`**: Runs automated tests.
+- **`npm run test:coverage`**: Generates a test coverage report.
 
-6. **Startar o Projeto**:
-   - No terminal dentro do container, execute o comando para iniciar o projeto:
-     ```sh
-     npm run start:dev
-     ```
+## CI/CD Pipeline
 
-7. **Acesse o Projeto**:
-   - O projeto estará disponível na porta 8080. Acesse [http://localhost:8080](http://localhost:8080) no seu navegador.
+The project includes a configured pipeline for:
+
+- **CI (Continuous Integration)**:
+  - Checks code linting.
+  - Runs tests and generates a test coverage report.
+- **CD (Continuous Deployment)**:
+  - Builds the application.
+  - Deploys to the configured environment.
+
+
