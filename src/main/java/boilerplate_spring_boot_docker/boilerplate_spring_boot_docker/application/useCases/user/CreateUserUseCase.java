@@ -7,6 +7,7 @@ import boilerplate_spring_boot_docker.boilerplate_spring_boot_docker.application
 import boilerplate_spring_boot_docker.boilerplate_spring_boot_docker.application.services.EncryptionServiceInterface;
 import boilerplate_spring_boot_docker.boilerplate_spring_boot_docker.application.services.LoggerServiceInterface;
 import boilerplate_spring_boot_docker.boilerplate_spring_boot_docker.domain.entities.User;
+import boilerplate_spring_boot_docker.boilerplate_spring_boot_docker.domain.enums.RoleEnum;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -37,7 +38,8 @@ public class CreateUserUseCase {
     String password = this.encryptPassword(input.password);
 
     this.repository.create(
-        new CreateUserRepositoryInputDto(input.name, input.email, input.phoneNumber, password));
+        new CreateUserRepositoryInputDto(
+            input.name, input.email, input.phoneNumber, password, RoleEnum.ADMIN));
   }
 
   public void run(CreateUserUseCaseInputDto input) throws BusinessException {

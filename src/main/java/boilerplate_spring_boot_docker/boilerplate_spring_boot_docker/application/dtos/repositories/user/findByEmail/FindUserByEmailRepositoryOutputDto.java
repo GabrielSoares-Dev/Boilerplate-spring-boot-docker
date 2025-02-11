@@ -5,12 +5,21 @@ public class FindUserByEmailRepositoryOutputDto {
   public String name;
   public String email;
   public String password;
+  public String[] permissions;
+  public Integer roleId;
 
   public FindUserByEmailRepositoryOutputDto(
-      Integer id, String name, String email, String password) {
+      Integer id,
+      String name,
+      String email,
+      String password,
+      String[] permissions,
+      Integer roleId) {
     this.id = id;
     this.name = name;
     this.email = email;
     this.password = password;
+    this.permissions = permissions;
+    this.roleId = roleId;
   }
 }

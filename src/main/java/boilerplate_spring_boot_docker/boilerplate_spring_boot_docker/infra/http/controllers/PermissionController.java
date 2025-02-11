@@ -22,6 +22,7 @@ import java.util.Map;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -49,6 +50,7 @@ public class PermissionController {
   private String logContext = "PermissionController";
 
   @PostMapping
+  @PreAuthorize("hasAuthority('CREATE_PERMISSION')")
   public ResponseEntity<Map<String, Object>> create(
       @Valid @RequestBody CreatePermissionValidator input) {
     this.loggerService.debug(String.format("Start %s create with input: ", this.logContext), input);
@@ -69,7 +71,8 @@ public class PermissionController {
     }
   }
 
-  @GetMapping()
+  @GetMapping
+  @PreAuthorize("hasAuthority('READ_ALL_PERMISSIONS')")
   public ResponseEntity<Map<String, Object>> findAll() throws BusinessException {
     this.loggerService.debug(String.format("Start %s findAll", this.logContext));
     List<FindAllPermissionsUseCaseOutputDto> output = this.findAllPermissionsUseCase.run();
@@ -79,6 +82,7 @@ public class PermissionController {
   }
 
   @GetMapping("/{id}")
+  @PreAuthorize("hasAuthority('READ_PERMISSION')")
   public ResponseEntity<Map<String, Object>> findById(@PathVariable Integer id) {
     this.loggerService.debug(String.format("Start %s findById with input: ", this.logContext), id);
     try {
@@ -103,6 +107,7 @@ public class PermissionController {
   }
 
   @PutMapping("/{id}")
+  @PreAuthorize("hasAuthority('UPDATE_PERMISSION')")
   public ResponseEntity<Map<String, Object>> update(
       @PathVariable Integer id, @Valid @RequestBody UpdatePermissionValidator input) {
     this.loggerService.debug(String.format("Start %s update with input: ", this.logContext), input);
@@ -125,6 +130,7 @@ public class PermissionController {
   }
 
   @DeleteMapping("/{id}")
+  @PreAuthorize("hasAuthority('DELETE_PERMISSION')")
   public ResponseEntity<Map<String, Object>> delete(@PathVariable Integer id) {
     this.loggerService.debug(String.format("Start %s delete with input: ", this.logContext), id);
     try {

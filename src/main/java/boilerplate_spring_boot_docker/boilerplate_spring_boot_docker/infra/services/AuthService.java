@@ -31,9 +31,14 @@ public class AuthService implements AuthServiceInterface {
 
   public String generateToken(String email)
       throws IllegalArgumentException, UnsupportedEncodingException {
+    FindUserByEmailRepositoryOutputDto userData = this.userRepository.findByEmail(email).get();
     Algorithm algorithm = Algorithm.HMAC256(this.SECRET_KEY);
+
+    String[] permissions = userData.permissions;
+
     return JWT.create()
         .withSubject(email)
+        .withArrayClaim("permissions", permissions)
         .withExpiresAt(new Date(System.currentTimeMillis() + this.EXPIRATION_TIME))
         .sign(algorithm);
   }

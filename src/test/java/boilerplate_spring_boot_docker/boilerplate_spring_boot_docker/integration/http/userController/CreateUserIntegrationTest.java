@@ -22,10 +22,13 @@ import org.springframework.test.web.servlet.ResultActions;
 @SpringBootTest
 @ActiveProfiles("test")
 @AutoConfigureMockMvc
+@Sql(value = "classpath:insert-admin-role.sql", executionPhase = ExecutionPhase.BEFORE_TEST_CLASS)
+@Sql(value = "classpath:reset-users.sql", executionPhase = ExecutionPhase.AFTER_TEST_CLASS)
 public class CreateUserIntegrationTest {
   @Autowired private MockMvc request;
 
   private ObjectMapper objectMapper;
+
   private String path = "/v1/user";
 
   @BeforeEach
@@ -34,7 +37,6 @@ public class CreateUserIntegrationTest {
   }
 
   @Test
-  @Sql(value = "classpath:reset-users.sql", executionPhase = ExecutionPhase.AFTER_TEST_METHOD)
   public void testCreated() throws Exception {
     Map<String, String> input = new HashMap<>();
     input.put("name", "Boilerplate");
@@ -53,7 +55,6 @@ public class CreateUserIntegrationTest {
 
   @Test
   @Sql(value = "classpath:insert-users.sql", executionPhase = ExecutionPhase.BEFORE_TEST_METHOD)
-  @Sql(value = "classpath:reset-users.sql", executionPhase = ExecutionPhase.AFTER_TEST_METHOD)
   public void testNotCreatedIfUserAlreadyExists() throws Exception {
     Map<String, String> input = new HashMap<>();
     input.put("name", "Boilerplate");

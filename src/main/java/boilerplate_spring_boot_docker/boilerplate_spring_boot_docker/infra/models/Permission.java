@@ -28,6 +28,13 @@ public class Permission {
   @Column(name = "updated_at")
   private LocalDateTime updatedAt;
 
+  public Permission() {}
+
+  public Permission(String name, String description) {
+    this.name = name;
+    this.description = description;
+  }
+
   @PreUpdate
   protected void onUpdate() {
     this.updatedAt = LocalDateTime.now();

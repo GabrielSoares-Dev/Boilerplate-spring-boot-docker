@@ -2,6 +2,7 @@ package boilerplate_spring_boot_docker.boilerplate_spring_boot_docker.infra.mode
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
+import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
@@ -32,7 +33,7 @@ public class Role {
   @Column(name = "updated_at")
   private LocalDateTime updatedAt;
 
-  @ManyToMany
+  @ManyToMany(fetch = FetchType.EAGER)
   @JoinTable(
       name = "role_has_permissions",
       joinColumns = @JoinColumn(name = "role_id"),
@@ -70,6 +71,10 @@ public class Role {
 
   public LocalDateTime getCreatedAt() {
     return createdAt;
+  }
+
+  public Set<Permission> getPermissions() {
+    return this.permissions;
   }
 
   public void setPermissions(Set<Permission> permissions) {

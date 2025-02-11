@@ -34,8 +34,22 @@ public class LoginIntegrationTest {
   }
 
   @Test
+  @Sql(
+      value = "classpath:insert-admin-role.sql",
+      executionPhase = ExecutionPhase.BEFORE_TEST_METHOD)
+  @Sql(
+      value = "classpath:insert-admin-permissions.sql",
+      executionPhase = ExecutionPhase.BEFORE_TEST_METHOD)
+  @Sql(
+      value = "classpath:sync-permissions-with-admin-role.sql",
+      executionPhase = ExecutionPhase.BEFORE_TEST_METHOD)
   @Sql(value = "classpath:insert-users.sql", executionPhase = ExecutionPhase.BEFORE_TEST_METHOD)
   @Sql(value = "classpath:reset-users.sql", executionPhase = ExecutionPhase.AFTER_TEST_METHOD)
+  @Sql(
+      value = "classpath:reset-role-has-permissions.sql",
+      executionPhase = ExecutionPhase.AFTER_TEST_METHOD)
+  @Sql(value = "classpath:reset-permissions.sql", executionPhase = ExecutionPhase.AFTER_TEST_METHOD)
+  @Sql(value = "classpath:reset-roles.sql", executionPhase = ExecutionPhase.AFTER_TEST_METHOD)
   public void testLogged() throws Exception {
     Map<String, String> input = new HashMap<>();
     input.put("email", "john.doe@example.com");

@@ -60,6 +60,14 @@ public class AuthServiceTest {
   @Test
   public void testGenerateToken() throws UnsupportedEncodingException {
     String email = "test@example.com";
+    String[] permissions = {"test-permission"};
+
+    FindUserByEmailRepositoryOutputDto findUserByEmailRepositoryOutputMock =
+        new FindUserByEmailRepositoryOutputDto(
+            1, "John Doe", email, "$2a$10$DowJonesIndex", permissions, 1);
+
+    when(this.userRepository.findByEmail(email))
+        .thenReturn(Optional.of(findUserByEmailRepositoryOutputMock));
     String output = authService.generateToken(email);
 
     assertNotNull(output);
@@ -97,9 +105,11 @@ public class AuthServiceTest {
     String email = "john.doe@example.com";
     String password = "Password@123";
     String encryptedPassword = "$2a$10$DowJonesIndex";
+    String[] permissions = {"test-permission"};
 
     FindUserByEmailRepositoryOutputDto findUserByEmailRepositoryOutputMock =
-        new FindUserByEmailRepositoryOutputDto(1, "John Doe", email, encryptedPassword);
+        new FindUserByEmailRepositoryOutputDto(
+            1, "John Doe", email, encryptedPassword, permissions, 1);
 
     when(this.userRepository.findByEmail(email))
         .thenReturn(Optional.of(findUserByEmailRepositoryOutputMock));
@@ -114,9 +124,11 @@ public class AuthServiceTest {
     String email = "test@example.com";
     String password = "WrongPassword";
     String encryptedPassword = "$2a$10$DowJonesIndex";
+    String[] permissions = {"test-permission"};
 
     FindUserByEmailRepositoryOutputDto findUserByEmailRepositoryOutputMock =
-        new FindUserByEmailRepositoryOutputDto(1, "John Doe", email, encryptedPassword);
+        new FindUserByEmailRepositoryOutputDto(
+            1, "John Doe", email, encryptedPassword, permissions, 1);
 
     when(userRepository.findByEmail(email))
         .thenReturn(Optional.of(findUserByEmailRepositoryOutputMock));

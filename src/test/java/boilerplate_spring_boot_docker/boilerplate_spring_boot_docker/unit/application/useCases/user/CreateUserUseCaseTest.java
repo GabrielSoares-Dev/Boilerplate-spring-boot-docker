@@ -15,6 +15,7 @@ import boilerplate_spring_boot_docker.boilerplate_spring_boot_docker.application
 import boilerplate_spring_boot_docker.boilerplate_spring_boot_docker.application.services.EncryptionServiceInterface;
 import boilerplate_spring_boot_docker.boilerplate_spring_boot_docker.application.services.LoggerServiceInterface;
 import boilerplate_spring_boot_docker.boilerplate_spring_boot_docker.application.useCases.user.CreateUserUseCase;
+import boilerplate_spring_boot_docker.boilerplate_spring_boot_docker.domain.enums.RoleEnum;
 import java.util.Optional;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -63,14 +64,15 @@ public class CreateUserUseCaseTest {
     assertEquals(this.defaultInput.email, capturedArgument.email);
     assertEquals(this.defaultInput.phoneNumber, capturedArgument.phoneNumber);
     assertEquals("encrypt-test", capturedArgument.password);
+    assertEquals(RoleEnum.ADMIN, capturedArgument.role);
   }
 
   @Test
   public void testNotCreateIfFoundUserBySameEmail() throws BusinessException {
-
+    String[] permissions = {"test-permission"};
     FindUserByEmailRepositoryOutputDto findByEmailOutputMock =
         new FindUserByEmailRepositoryOutputDto(
-            1, "John Doe", "john.doe@example.com", "password-test");
+            1, "John Doe", "john.doe@example.com", "password-test", permissions, 1);
 
     when(this.repository.findByEmail(this.defaultInput.email))
         .thenReturn(Optional.of(findByEmailOutputMock));
