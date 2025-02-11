@@ -1,4 +1,4 @@
-ame: DEPLOY - DEV
+name: DEPLOY - DEV
 on:
    workflow_dispatch:
 jobs:
