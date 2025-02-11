@@ -1,23 +1,8 @@
 package boilerplate_spring_boot_docker.boilerplate_spring_boot_docker.integration.http.authController;
 
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
-
-import com.fasterxml.jackson.databind.ObjectMapper;
-import java.util.HashMap;
-import java.util.Map;
-import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Test;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.http.MediaType;
 import org.springframework.test.context.ActiveProfiles;
-import org.springframework.test.context.jdbc.Sql;
-import org.springframework.test.context.jdbc.Sql.ExecutionPhase;
-import org.springframework.test.web.servlet.MockMvc;
-import org.springframework.test.web.servlet.ResultActions;
 
 @SpringBootTest
 @ActiveProfiles("test")
@@ -48,7 +33,8 @@ public class LoginIntegrationTest {
   // @Sql(
   //     value = "classpath:reset-role-has-permissions.sql",
   //     executionPhase = ExecutionPhase.AFTER_TEST_METHOD)
-  // @Sql(value = "classpath:reset-permissions.sql", executionPhase = ExecutionPhase.AFTER_TEST_METHOD)
+  // @Sql(value = "classpath:reset-permissions.sql", executionPhase =
+  // ExecutionPhase.AFTER_TEST_METHOD)
   // @Sql(value = "classpath:reset-roles.sql", executionPhase = ExecutionPhase.AFTER_TEST_METHOD)
   // public void testLogged() throws Exception {
   //   Map<String, String> input = new HashMap<>();
