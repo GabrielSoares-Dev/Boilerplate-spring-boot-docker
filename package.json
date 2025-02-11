@@ -8,8 +8,8 @@
         "db:migrate": "mvn flyway:migrate",
         "lint:test": "mvn spotless:check",
         "lint:fix": "mvn spotless:apply",
-        "test": "mvn test",
-        "test:coverage": "mvn test jacoco:report"
+        "test": "mvn test jacoco:report",
+        "test:coverage": "mvn test -Pisolated-tests jacoco:report "
     },
     "devDependencies": {}
 }
