@@ -9,7 +9,7 @@
         "lint:test": "mvn spotless:check",
         "lint:fix": "mvn spotless:apply",
         "test": "mvn test",
-        "test:coverage": "mvn test -Pcustom-tests jacoco:report "
+        "test:coverage": "mvn test jacoco:report "
     },
     "devDependencies": {}
 }
