@@ -187,13 +187,21 @@
 			</build>
 		</profile>
 		<profile>
-			<id>isolated-tests</id>
+			<id>unconflicted-tests</id>
 			<build>
 				<plugins>
 					<plugin>
 						<groupId>org.apache.maven.plugins</groupId>
-						<artifactId>maven-surefire-plugin</artifactId>
+						<artifactId>maven-failsafe-plugin</artifactId>
 						<version>3.0.0</version>
+						<executions>
+							<execution>
+								<goals>
+									<goal>integration-test</goal>
+									<goal>verify</goal>
+								</goals>
+							</execution>
+						</executions>
 						<configuration>
 							<parallel>none</parallel>
 							<forkCount>3</forkCount>
