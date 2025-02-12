@@ -4,22 +4,25 @@ WORKDIR /app/boilerplate-spring-boot-docker
 
 COPY package.json package-lock.json ./
 
-RUN npm i
+RUN npm install
+
 
 FROM eclipse-temurin:21-jdk-alpine AS java_stage
 
 RUN apk update && apk add --no-cache \
     curl \
     maven \
-    git \
-    nodejs \
-    npm
+    git 
 
-RUN npm install -g npm@9.3.0
+COPY --from=node_stage /usr/local /usr/local
+
+ENV PATH="/usr/local/bin:$PATH"
 
 WORKDIR /app/boilerplate-spring-boot-docker
 
 COPY . .
+
+COPY --from=node_stage /app/boilerplate-spring-boot-docker/node_modules /app/boilerplate-spring-boot-docker/node_modules
 
 RUN mvn dependency:resolve
 
