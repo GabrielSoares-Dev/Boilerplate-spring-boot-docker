@@ -35,7 +35,7 @@ public class UpdateRoleIntegrationTest extends BaseAuthenticatedTest {
       executionPhase = ExecutionPhase.AFTER_TEST_METHOD)
   public void testUpdated() throws Exception {
     Map<String, String> input = new HashMap<>();
-    input.put("name", "test-name-1");
+    input.put("name", "test-role");
     input.put("description", "test-description");
 
     String inputJson = new ObjectMapper().writeValueAsString(input);

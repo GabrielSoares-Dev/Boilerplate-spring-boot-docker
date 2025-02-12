@@ -12,11 +12,11 @@ This project is built following the **Clean Architecture** principles with **Jav
 - **JaCoCo** - Test coverage
 - **Maven** - Dependency manager and build automation tool
 
-## API Documentation
+## Docs
 
-The API documentation is available on Postman:
+You can find the complete API documentation at the following Postman link:
 
-[Postman Documentation]([#](https://documenter.getpostman.com/view/37022898/2sAYXBFzV5))
+[![Running on postman](https://run.pstmn.io/button.svg)](https://documenter.getpostman.com/view/37022898/2sAYXBFzV5)
 
 ## Available Commands
 
@@ -55,4 +55,4 @@ The project includes a configured pipeline for:
   - Builds the application.
   - Deploys to the configured environment.
 
-
+## By Gabriel Soares Maciel
