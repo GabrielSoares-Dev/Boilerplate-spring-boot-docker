@@ -205,7 +205,7 @@
 						<configuration>
 							<parallel>none</parallel>
 							<forkCount>3</forkCount>
-							<reuseForks>true</reuseForks>
+							<reuseForks>false</reuseForks>
 							<includes>
 								<include>**/integration/**/*Test.java</include>
 							</includes>
